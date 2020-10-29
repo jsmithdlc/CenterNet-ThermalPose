@@ -224,6 +224,10 @@ class opts(object):
     self.parser.add_argument('--eval_oracle_dep', action='store_true', 
                              help='use ground truth depth.')
 
+    # JAVIER SMITH: added options
+    self.parser.add_argument('--freeze_backbone', action='store_true', 
+                             help='freeze backbone architecture')
+
   def parse(self, args=''):
     if args == '':
       opt = self.parser.parse_args()

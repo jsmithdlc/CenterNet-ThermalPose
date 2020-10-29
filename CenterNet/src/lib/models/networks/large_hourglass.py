@@ -260,17 +260,30 @@ class exkp(nn.Module):
             kp  = kp_(inter)
             cnv = cnv_(kp)
 
+
+            # ORIGINAL
             out = {}
             for head in self.heads:
                 layer = self.__getattr__(head)[ind]
                 y = layer(cnv)
                 out[head] = y
+
+
+            """
+            # FOR SAVING ONNX FILE
+            out = []
+            for head in self.heads:
+                layer = self.__getattr__(head)[ind]
+                y = layer(cnv)
+                out.append(y)
+            """
             
             outs.append(out)
             if ind < self.nstack - 1:
                 inter = self.inters_[ind](inter) + self.cnvs_[ind](cnv)
                 inter = self.relu(inter)
                 inter = self.inters[ind](inter)
+
         return outs
 
 

@@ -10,7 +10,7 @@ import os
 
 import torch.utils.data as data
 
-class COCOHP(data.Dataset):
+class THERMALPOSE(data.Dataset):
   num_classes = 1
   num_joints = 17
   default_resolution = [512, 512]
@@ -21,7 +21,7 @@ class COCOHP(data.Dataset):
   flip_idx = [[1, 2], [3, 4], [5, 6], [7, 8], [9, 10], 
               [11, 12], [13, 14], [15, 16]]
   def __init__(self, opt, split):
-    super(COCOHP, self).__init__()
+    super(THERMALPOSE, self).__init__()
     self.edges = [[0, 1], [0, 2], [1, 3], [2, 4], 
                   [4, 6], [3, 5], [5, 6], 
                   [5, 7], [7, 9], [6, 8], [8, 10], 
@@ -29,8 +29,8 @@ class COCOHP(data.Dataset):
                   [12, 14], [14, 16], [11, 13], [13, 15]]
     
     self.acc_idxs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
-    self.data_dir = os.path.join(opt.data_dir, 'coco')
-    self.img_dir = os.path.join(self.data_dir, '{}2017'.format(split))
+    self.data_dir = os.path.join(opt.data_dir, 'thermal_pose')
+    self.img_dir = os.path.join(self.data_dir, '{}'.format(split))
     if split == 'test':
       self.annot_path = os.path.join(
           self.data_dir, 'annotations', 
@@ -38,7 +38,7 @@ class COCOHP(data.Dataset):
     else:
       self.annot_path = os.path.join(
         self.data_dir, 'annotations', 
-        'person_keypoints_{}2017.json').format(split)
+        'thermalPose_{}.json').format(split)
     self.max_objs = 32
     self._data_rng = np.random.RandomState(123)
     self._eig_val = np.array([0.2141788, 0.01817699, 0.00341571],
@@ -51,7 +51,7 @@ class COCOHP(data.Dataset):
     self.split = split
     self.opt = opt
 
-    print('==> initializing coco 2017 {} data.'.format(split))
+    print('==> initializing Thermal Pose {} data.'.format(split))
     self.coco = coco.COCO(self.annot_path)
     image_ids = self.coco.getImgIds()
 

@@ -5,6 +5,7 @@ from __future__ import print_function
 import torchvision.models as models
 import torch
 import torch.nn as nn
+import torch.onnx
 import os
 
 from .networks.msra_resnet import get_pose_net
@@ -12,11 +13,15 @@ from .networks.dlav0 import get_pose_net as get_dlav0
 from .networks.pose_dla_dcn import get_pose_net as get_dla_dcn
 from .networks.resnet_dcn import get_pose_net as get_pose_net_dcn
 from .networks.large_hourglass import get_large_hourglass_net
+from .networks.pose_higher_hrnet import get_hrpose_net
+from config import cfg, update_config
 
 _model_factory = {
   'res': get_pose_net, # default Resnet with deconv
   'dlav0': get_dlav0, # default DLAup
   'dla': get_dla_dcn,
+  'hrnet_w32': get_hrpose_net,
+  'hrnet_w48': get_hrpose_net,
   'resdcn': get_pose_net_dcn,
   'hourglass': get_large_hourglass_net,
 }
@@ -25,11 +30,19 @@ def create_model(arch, heads, head_conv):
   num_layers = int(arch[arch.find('_') + 1:]) if '_' in arch else 0
   arch = arch[:arch.find('_')] if '_' in arch else arch
   get_model = _model_factory[arch]
-  model = get_model(num_layers=num_layers, heads=heads, head_conv=head_conv)
+
+  if("hrnet" in arch):
+    if("w48" in arch):
+      update_config(cfg, "../cfg_files/hrnet_w48_512.yaml")
+    else:
+      update_config(cfg, "../cfg_files/hrnet_w32_512.yaml")
+    model = get_model(num_layers=num_layers, cfg = cfg, heads=heads, head_conv=head_conv)
+  else:
+    model = get_model(num_layers=num_layers, heads=heads, head_conv=head_conv)
   return model
 
 def load_model(model, model_path, optimizer=None, resume=False, 
-               lr=None, lr_step=None):
+               lr=None, lr_step=None,freeze_backbone=False):
   start_epoch = 0
   checkpoint = torch.load(model_path, map_location=lambda storage, loc: storage)
   print('loaded {}, epoch {}'.format(model_path, checkpoint['epoch']))
@@ -63,6 +76,18 @@ def load_model(model, model_path, optimizer=None, resume=False,
       print('No param {}.'.format(k) + msg)
       state_dict[k] = model_state_dict[k]
   model.load_state_dict(state_dict, strict=False)
+
+
+  if freeze_backbone:
+    print("Freezing Backbone Layers")
+    final_layers = ["hm","wh","hps","reg","hm_hp","hp_offset"]
+    for name,param in model.named_parameters():
+      if name.split(".")[0] not in final_layers:
+        param.requires_grad = False
+
+  #dummy_input = torch.randn(1, 3, 512, 512)
+  #torch.onnx.export(model, dummy_input, "../model.onnx")
+
 
   # resume optimizer parameters
   if optimizer is not None and resume:
