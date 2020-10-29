@@ -1,0 +1,106 @@
+==> torch version: 1.1.0
+==> cudnn version: 7501
+==> Cmd:
+['main.py', 'multi_pose', '--exp_id', 'hg_1x_color_finetune_bs16_mb4_lr2.5e-3', '--arch', 'hourglass', '--dataset', 'thermal_pose', '--master_batch', '4', '--batch_size', '16', '--lr', '2.5e-3', '--load_model', '../exp/multi_pose/hg_1x_color/model_best.pth', '--gpus', '0,1', '--save_all', '--num_epoch', '5', '--lr_step', '10', '--save_intervals', '1']
+==> Opt:
+  K: 100
+  aggr_weight: 0.0
+  agnostic_ex: False
+  arch: hourglass
+  aug_ddd: 0.5
+  aug_rot: 0
+  batch_size: 16
+  cat_spec_wh: False
+  center_thresh: 0.1
+  chunk_sizes: [4, 12]
+  data_dir: /centernet/CenterNet/src/lib/../../data
+  dataset: thermal_pose
+  debug: 0
+  debug_dir: /centernet/CenterNet/src/lib/../../exp/multi_pose/hg_1x_color_finetune_bs16_mb4_lr2.5e-3/debug
+  debugger_theme: white
+  demo: 
+  dense_hp: False
+  dense_wh: False
+  dep_weight: 1
+  dim_weight: 1
+  down_ratio: 4
+  eval_oracle_dep: False
+  eval_oracle_hm: False
+  eval_oracle_hmhp: False
+  eval_oracle_hp_offset: False
+  eval_oracle_kps: False
+  eval_oracle_offset: False
+  eval_oracle_wh: False
+  exp_dir: /centernet/CenterNet/src/lib/../../exp/multi_pose
+  exp_id: hg_1x_color_finetune_bs16_mb4_lr2.5e-3
+  fix_res: True
+  flip: 0.5
+  flip_idx: [[1, 2], [3, 4], [5, 6], [7, 8], [9, 10], [11, 12], [13, 14], [15, 16]]
+  flip_test: False
+  gpus: [0, 1]
+  gpus_str: 0,1
+  head_conv: 64
+  heads: {'hm': 1, 'wh': 2, 'hps': 34, 'reg': 2, 'hm_hp': 17, 'hp_offset': 2}
+  hide_data_time: False
+  hm_hp: True
+  hm_hp_weight: 1
+  hm_weight: 1
+  hp_weight: 1
+  input_h: 512
+  input_res: 512
+  input_w: 512
+  keep_res: False
+  kitti_split: 3dop
+  load_model: ../exp/multi_pose/hg_1x_color/model_best.pth
+  lr: 0.0025
+  lr_step: [10]
+  master_batch_size: 4
+  mean: [[[0.40789655 0.44719303 0.47026116]]]
+  metric: loss
+  mse_loss: False
+  nms: False
+  no_color_aug: False
+  norm_wh: False
+  not_cuda_benchmark: False
+  not_hm_hp: False
+  not_prefetch_test: False
+  not_rand_crop: False
+  not_reg_bbox: False
+  not_reg_hp_offset: False
+  not_reg_offset: False
+  num_classes: 1
+  num_epochs: 5
+  num_iters: -1
+  num_stacks: 2
+  num_workers: 4
+  off_weight: 1
+  output_h: 128
+  output_res: 128
+  output_w: 128
+  pad: 127
+  peak_thresh: 0.2
+  print_iter: 0
+  rect_mask: False
+  reg_bbox: True
+  reg_hp_offset: True
+  reg_loss: l1
+  reg_offset: True
+  resume: False
+  root_dir: /centernet/CenterNet/src/lib/../..
+  rot_weight: 1
+  rotate: 0
+  save_all: True
+  save_dir: /centernet/CenterNet/src/lib/../../exp/multi_pose/hg_1x_color_finetune_bs16_mb4_lr2.5e-3
+  save_intervals: 1
+  scale: 0.4
+  scores_thresh: 0.1
+  seed: 317
+  shift: 0.1
+  std: [[[0.2886383  0.27408165 0.27809834]]]
+  task: multi_pose
+  test: False
+  test_scales: [1.0]
+  trainval: False
+  val_intervals: 5
+  vis_thresh: 0.3
+  wh_weight: 0.1
