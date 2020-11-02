@@ -48,19 +48,19 @@ def plot_normal(scores, experiment_id):
 	domain = scores_experiment['domain'][0]
 	fig,ax = plt.subplots(1,1)
 	scores_experiment.plot(x='epoch',y='AP',style='*',ax=ax,
-		title="{} {} {} Experiment".format(arch,regime,domain))
+		title="Experiment: {}".format(experiment_id))
 	ax.set_ylabel('AP')
 	ax.set_xlabel("Epoch")
 	ax.grid("minor")
-	plt.savefig("../figures/{}_{}/AP_{}.png".format(arch,regime,domain))
+	plt.savefig("../figures/{}_{}/AP_{}.png".format(arch,regime,experiment_id))
 
 	fig,ax = plt.subplots(1,1)
 	scores_experiment.plot(x='epoch',y='AR',style='*',ax=ax,
-		title="{} {} {} Experiment".format(arch,regime,domain))
+		title="Experiment: {}".format(experiment_id))
 	ax.set_ylabel('AR')
 	ax.set_xlabel("Epoch")
 	ax.grid("minor")
-	plt.savefig("../figures/{}_{}/AR_{}.png".format(arch,regime,domain))
+	plt.savefig("../figures/{}_{}/AR_{}.png".format(arch,regime,experiment_id))
 
 
 def plot_score_diff_domains(scores, score_name, model, regime):
@@ -112,26 +112,28 @@ def plot_epoch_test(scores,score_name,model,regime,domain,opts=None):
 	plt.savefig("../figures/{}_{}/{}_{}_epoch_test".format(model,regime,score_name,domain))
 
 def plot_batch_test(scores,score_name,model,regime,domain,opts=None):
-	lr = "5e-5"
+	preamble = "backbonefrz"
 	#ids = ['bs56_mb8_lr5e-5','bs32_mb8_lr5e-5','bs16_mb8_lr5e-5','bs8_mb8_lr5e-5']
 	#ids = ['bs32_mb8_5e-4','bs32_mb8_lr5e-4','bs16_mb8_lr5e-4','bs8_mb8_lr5e-4']
 	#ids = ['bs56_mb8_lr5e-3','bs32_mb8_lr5e-3','bs16_mb8_lr5e-3','bs8_mb8_lr5e-3']
 	#ids = ['bs24_mb4_lr2.5e-3','bs16_mb4_lr2.5e-3','bs8_mb4_lr2.5e-3','bs4_mb4_lr2.5e-3']
 	#ids = ['bs24_mb4_lr2.5e-4','bs16_mb4_lr2.5e-4','bs8_mb4_lr2.5e-4','bs4_mb4_lr2.5e-4']
-	ids = ['bs24_mb4_lr2.5e-5','bs16_mb4_lr2.5e-5','bs8_mb4_lr2.5e-5','bs4_mb4_lr2.5e-5']
-
+	#ids = ['bs24_mb4_lr2.5e-5','bs16_mb4_lr2.5e-5','bs8_mb4_lr2.5e-5','bs4_mb4_lr2.5e-5']
+	ids = ['mb8_bs56_lr5e-5','mb8_bs32_lr5e-5','mb8_bs16_lr5e-5','mb8_bs8_lr5e-5']
 	fig, ax = plt.subplots(1,1)
 	for exp_id in ids:
-		experiment = "{}_{}_{}_finetune_{}".format(model,regime,domain,exp_id)
+		experiment = "{}_{}_{}_{}_{}".format(model,regime,domain,preamble,exp_id)
 		opt = opts[experiment]
 		scores_epoch = scores.loc[experiment]
+		lr = opt['lr']
 		scores_epoch.plot(x='epoch',y=score_name,style="*",ax=ax,
-			title='{}: {} {} (lr={}) Different Batch Sizes'.format(score_name, model,regime,opt['lr']),
+			title='{}: {} {} (lr={}) Different Batch Sizes'.format(score_name, model,regime,lr),
 			label="batch_size = {}".format(opt['batch_size']))
+	lr = "{:.0e}".format(float(lr))
 	ax.set_ylabel(score_name)
 	ax.set_xlabel("Epoch")
 	ax.grid("minor")
-	plt.savefig("../figures/{}_{}/{}_{}_{}_batch_test".format(model,regime,score_name,domain,lr))
+	plt.savefig("../figures/{}_{}/{}_{}_{}_{}_batch_test".format(model,regime,score_name,domain,lr,preamble))
 
 def get_opt_file(opt_path):
 	opts = []
@@ -148,26 +150,11 @@ def get_opt_file(opt_path):
 
 if __name__=='__main__':
 	scores, opts = gather_results()
-	"""
-	plot_scores_by_lr(scores,'AR','dla','1x','thermal')
-	plot_scores_by_lr(scores,'AP','dla','1x','thermal')
-	plot_epoch_test(scores,'AP','dla','1x','thermal',opts=opts)
-	plot_epoch_test(scores,'AR','dla','1x','thermal',opts=opts)
-	"""
 
-	plot_batch_test(scores,'AP','hg','1x','color',opts=opts)
-	plot_batch_test(scores,'AR','hg','1x','color',opts=opts)
+	plot_batch_test(scores,'AP','dla','3x','gray',opts=opts)
+	plot_batch_test(scores,'AR','dla','3x','gray',opts=opts)
 
-	plot_epoch_test(scores,'AP','hg','1x','color',opts=opts)
-	plot_epoch_test(scores,'AR','hg','1x','color',opts=opts)
 
-	plot_normal(scores,"dla_3x_gray_finetune")
-	"""
-	plot_scores_by_lr(scores,'AP','dla','1x','color')
-	plot_scores_by_lr(scores,'AR','dla','1x','color')
-	plot_epoch_test(scores,'AP','dla','1x','color',opts=opts)
-	plot_epoch_test(scores,'AR','dla','1x','color',opts=opts)
-	"""
 	scores = scores.set_index('epoch',append=True)
 	AP_top_scores = scores.loc[scores['AP'].groupby(level=0).idxmax()][['AP']]
 	AR_top_scores = scores.loc[scores['AR'].groupby(level=0).idxmax()][['AR']]
