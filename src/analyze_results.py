@@ -151,15 +151,15 @@ def get_opt_file(opt_path):
 if __name__=='__main__':
 	scores, opts = gather_results()
 
-	plot_batch_test(scores,'AP','dla','3x','gray',opts=opts)
-	plot_batch_test(scores,'AR','dla','3x','gray',opts=opts)
+	#plot_batch_test(scores,'AP','dla','3x','gray',opts=opts)
+	#plot_batch_test(scores,'AR','dla','3x','gray',opts=opts)
 
 
 	scores = scores.set_index('epoch',append=True)
-	AP_top_scores = scores.loc[scores['AP'].groupby(level=0).idxmax()][['AP']]
-	AR_top_scores = scores.loc[scores['AR'].groupby(level=0).idxmax()][['AR']]
-	AR_top_scores.to_csv('../results/AR_top.csv')
-	AP_top_scores.to_csv('../results/AP_top.csv')
+	AP_top_scores = scores.loc[scores['AP'].groupby(level=0).idxmax()][['AP']].reset_index(level=[1]).rename(columns={"epoch":"best_AP_epoch"})
+	AR_top_scores = scores.loc[scores['AR'].groupby(level=0).idxmax()][['AR']].reset_index(level=[1]).rename(columns={"epoch":"best_AR_epoch"})
+	top_scores = pd.merge(AP_top_scores,AR_top_scores,left_index=True,right_index=True)
+	top_scores.to_csv('../results/top_scores.csv')
 
 	top_ones = scores[['arch','domain','AP','AR']].groupby(['arch','domain']).max().loc[[('dla','color'),('dla','thermal'),('hg','thermal')]]
 	top_ones = top_ones.reset_index()
