@@ -401,7 +401,7 @@ class COCOevalPerKpt:
         def _summarize( ap=1, iouThr=None, areaRng='all', maxDets=100 ):
             p = self.params
             iStr = ' {:<18} {} @[ IoU={:<9} | area={:>6s} | maxDets={:>3d} ] = '
-            titleStr = 'Average Precision' if ap == 1 else 'Average Recall'
+            titleStr = 'Per Kpt Average Precision' if ap == 1 else 'Per Kpt Average Recall   '
             typeStr = '(AP)' if ap==1 else '(AR)'
             iouStr = '{:0.2f}:{:0.2f}'.format(p.iouThrs[0], p.iouThrs[-1]) \
                 if iouThr is None else '{:0.2f}'.format(iouThr)
@@ -434,6 +434,7 @@ class COCOevalPerKpt:
 
         def _summarizeKps():
             stats = np.zeros((10,17))
+            print(" "*81 + "nose  l_eye r_eye l_ear r_ear l_sho r_sho l_elb r_elb l_wri r_wri l_hip r_hip l_kne r_kne l_ank r_ank")
             stats[0] = _summarize(1, maxDets=20)
             stats[1] = _summarize(1, maxDets=20, iouThr=.5)
             stats[2] = _summarize(1, maxDets=20, iouThr=.75)
