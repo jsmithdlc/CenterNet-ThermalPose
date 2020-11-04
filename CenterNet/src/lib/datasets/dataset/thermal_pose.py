@@ -4,6 +4,7 @@ from __future__ import print_function
 
 import pycocotools.coco as coco
 from pycocotools.cocoeval import COCOeval
+from utils.evalCoco_per_kpts import COCOevalPerKpt
 import numpy as np
 import json
 import os
@@ -114,7 +115,14 @@ class THERMALPOSE(data.Dataset):
     coco_eval.evaluate()
     coco_eval.accumulate()
     coco_eval.summarize()
+
+    coco_eval = COCOevalPerKpt(self.coco, coco_dets, "keypoints")
+    coco_eval.evaluate()
+    coco_eval.accumulate()
+    coco_eval.summarize()
+    """
     coco_eval = COCOeval(self.coco, coco_dets, "bbox")
     coco_eval.evaluate()
     coco_eval.accumulate()
     coco_eval.summarize()
+    """
