@@ -42,7 +42,7 @@ def create_model(arch, heads, head_conv):
   return model
 
 def load_model(model, model_path, optimizer=None, resume=False, 
-               lr=None, lr_step=None,freeze_backbone=False):
+               lr=None, lr_step=None,freeze_backbone=False,freeze_blocks=""):
   start_epoch = 0
   checkpoint = torch.load(model_path, map_location=lambda storage, loc: storage)
   print('loaded {}, epoch {}'.format(model_path, checkpoint['epoch']))
@@ -77,13 +77,28 @@ def load_model(model, model_path, optimizer=None, resume=False,
       state_dict[k] = model_state_dict[k]
   model.load_state_dict(state_dict, strict=False)
 
-
+  # Freezes backbone layer
   if freeze_backbone:
     print("Freezing Backbone Layers")
     final_layers = ["hm","wh","hps","reg","hm_hp","hp_offset"]
     for name,param in model.named_parameters():
       if name.split(".")[0] not in final_layers:
         param.requires_grad = False
+
+  # Freezes specified backbone layers
+  elif freeze_blocks != "":
+    freeze_blocks = freeze_blocks.split(",") 
+    if(model.__class__.__name__ == 'DLASeg'):
+      for name,param in model.named_parameters():
+        if name.split(".")[1] in freeze_blocks:
+           print("FREEZING {} OF BACKBONE NETWORK".format(name))
+           param.requires_grad = False
+    elif(model.__class__.__name__ == 'HourglassNet'):
+      for name,param in model.named_parameters():
+        if any(block in name for block in freeze_blocks):
+           print("FREEZING {} OF BACKBONE NETWORK".format(name))
+           param.requires_grad = False
+
 
   #dummy_input = torch.randn(1, 3, 512, 512)
   #torch.onnx.export(model, dummy_input, "../model.onnx")

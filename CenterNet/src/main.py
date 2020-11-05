@@ -34,7 +34,7 @@ def main(opt):
   start_epoch = 0
   if opt.load_model != '':
     model, optimizer, start_epoch = load_model(
-      model, opt.load_model, optimizer, opt.resume, opt.lr, opt.lr_step, opt.freeze_backbone)
+      model, opt.load_model, optimizer, opt.resume, opt.lr, opt.lr_step, opt.freeze_backbone,opt.freeze_blocks)
 
   Trainer = train_factory[opt.task]
   trainer = Trainer(opt, model, optimizer)
