@@ -20,7 +20,8 @@ for kpt in kpt_names:
 	xy = kpt_map[kpt]['xy']
 	rgb = (np.array(cmap(score))*255)[:-1].astype(np.int)
 	rgb = (int(rgb[0]),int(rgb[1]),int(rgb[2]))
-	radius = int(score*20)
+	#radius = int(score*20)
+	radius = 12
 	cv2.circle(img,xy,radius,rgb,thickness=-1,lineType=cv2.LINE_AA)
 	#cv2.putText(img,str(score),xy, cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1, cv2.LINE_AA)
 
