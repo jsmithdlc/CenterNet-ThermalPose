@@ -23,10 +23,10 @@ if __name__ == '__main__':
 	
 	"""
 	cy = timeit.Timer('colormap2gray_cy.main(args)',setup=setup)
-	py = timeit.Timer('colormap2gray.main(args)',setup=setup)
-	py_time = py.timeit(2)
-	cy_time = cy.timeit(2)
+	#py = timeit.Timer('colormap2gray.main(args)',setup=setup)
+	cy_time = cy.timeit(5)
+	#py_time = py.timeit(2)
 	print("Cython Program Time:", cy_time)
-	print("Python Program Time:", py_time)
+	#print("Python Program Time:", py_time)
 	"""
 	colormap2gray_cy.main(args)
