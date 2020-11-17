@@ -38,6 +38,6 @@ def main(opts):
 	for _,img_path in tqdm(enumerate(paths)):
 		color_image = cv2.imread(img_path)
 		color_image = resize(color_image,10)
-		#gray_img = cv2.cvtColor(color_image,cv2.COLOR_BGR2GRAY)
-		gray_img = np.apply_along_axis(lambda bgr: color_to_gray_map[nearest(color_to_gray_map.keys(),bgr)], 2, color_image)
+		gray_img = cv2.cvtColor(color_image,cv2.COLOR_BGR2GRAY)
+		#gray_img = np.apply_along_axis(lambda bgr: color_to_gray_map[nearest(color_to_gray_map.keys(),bgr)], 2, color_image)
 		cv2.imwrite("{}/{}{}".format(opts.output_dir,preamble,img_path.split("/")[-1]),gray_img)

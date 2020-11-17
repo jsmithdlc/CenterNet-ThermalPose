@@ -1110,7 +1110,6 @@ static CYTHON_INLINE __pyx_t_double_complex __pyx_t_double_complex_from_parts(do
 
 
 /*--- Type declarations ---*/
-struct __pyx_obj_16colormap2gray_cy___pyx_scope_struct__main;
 
 /* "../../../../../../../.local/lib/python3.6/site-packages/numpy/__init__.pxd":728
  * ctypedef npy_longdouble longdouble_t
@@ -1176,20 +1175,6 @@ struct __pyx_ctuple_int__and_int {
   int f0;
   int f1;
 };
-
-/* "colormap2gray_cy.pyx":58
- * 	return cmap
- * 
- * def main(opts):             # <<<<<<<<<<<<<<
- * 	cdef np.ndarray[np.uint8_t,ndim=1] gray_values = np.arange(256,dtype=np.uint8)
- * 	cdef np.ndarray[np.uint8_t,ndim=3] cmap
- */
-struct __pyx_obj_16colormap2gray_cy___pyx_scope_struct__main {
-  PyObject_HEAD
-  PyObject *__pyx_v_color_to_gray_map;
-  PyObject *__pyx_v_color_to_gray_map_keys;
-};
-
 
 /* --- Runtime support code (head) --- */
 /* Refnanny.proto */
@@ -1499,20 +1484,6 @@ static CYTHON_INLINE PyObject *__Pyx_PyObject_GetItem(PyObject *obj, PyObject* k
 #define __Pyx_PyObject_GetItem(obj, key)  PyObject_GetItem(obj, key)
 #endif
 
-/* None.proto */
-static CYTHON_INLINE void __Pyx_RaiseClosureNameError(const char *varname);
-
-/* DictGetItem.proto */
-#if PY_MAJOR_VERSION >= 3 && !CYTHON_COMPILING_IN_PYPY
-static PyObject *__Pyx_PyDict_GetItem(PyObject *d, PyObject* key);
-#define __Pyx_PyObject_Dict_GetItem(obj, name)\
-    (likely(PyDict_CheckExact(obj)) ?\
-     __Pyx_PyDict_GetItem(obj, name) : PyObject_GetItem(obj, name))
-#else
-#define __Pyx_PyDict_GetItem(d, key) PyObject_GetItem(d, key)
-#define __Pyx_PyObject_Dict_GetItem(obj, name)  PyObject_GetItem(obj, name)
-#endif
-
 /* py_dict_keys.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyDict_Keys(PyObject* d);
 
@@ -1565,69 +1536,6 @@ static CYTHON_INLINE PyObject* __Pyx_CallUnboundCMethod1(__Pyx_CachedCFunction* 
 #define __Pyx_CallUnboundCMethod1(cfunc, self, arg)  __Pyx__CallUnboundCMethod1(cfunc, self, arg)
 #endif
 
-/* FetchCommonType.proto */
-static PyTypeObject* __Pyx_FetchCommonType(PyTypeObject* type);
-
-/* CythonFunctionShared.proto */
-#define __Pyx_CyFunction_USED 1
-#define __Pyx_CYFUNCTION_STATICMETHOD  0x01
-#define __Pyx_CYFUNCTION_CLASSMETHOD   0x02
-#define __Pyx_CYFUNCTION_CCLASS        0x04
-#define __Pyx_CyFunction_GetClosure(f)\
-    (((__pyx_CyFunctionObject *) (f))->func_closure)
-#define __Pyx_CyFunction_GetClassObj(f)\
-    (((__pyx_CyFunctionObject *) (f))->func_classobj)
-#define __Pyx_CyFunction_Defaults(type, f)\
-    ((type *)(((__pyx_CyFunctionObject *) (f))->defaults))
-#define __Pyx_CyFunction_SetDefaultsGetter(f, g)\
-    ((__pyx_CyFunctionObject *) (f))->defaults_getter = (g)
-typedef struct {
-    PyCFunctionObject func;
-#if PY_VERSION_HEX < 0x030500A0
-    PyObject *func_weakreflist;
-#endif
-    PyObject *func_dict;
-    PyObject *func_name;
-    PyObject *func_qualname;
-    PyObject *func_doc;
-    PyObject *func_globals;
-    PyObject *func_code;
-    PyObject *func_closure;
-    PyObject *func_classobj;
-    void *defaults;
-    int defaults_pyobjects;
-    size_t defaults_size;  // used by FusedFunction for copying defaults
-    int flags;
-    PyObject *defaults_tuple;
-    PyObject *defaults_kwdict;
-    PyObject *(*defaults_getter)(PyObject *);
-    PyObject *func_annotations;
-} __pyx_CyFunctionObject;
-static PyTypeObject *__pyx_CyFunctionType = 0;
-#define __Pyx_CyFunction_Check(obj)  (__Pyx_TypeCheck(obj, __pyx_CyFunctionType))
-static PyObject *__Pyx_CyFunction_Init(__pyx_CyFunctionObject* op, PyMethodDef *ml,
-                                      int flags, PyObject* qualname,
-                                      PyObject *self,
-                                      PyObject *module, PyObject *globals,
-                                      PyObject* code);
-static CYTHON_INLINE void *__Pyx_CyFunction_InitDefaults(PyObject *m,
-                                                         size_t size,
-                                                         int pyobjects);
-static CYTHON_INLINE void __Pyx_CyFunction_SetDefaultsTuple(PyObject *m,
-                                                            PyObject *tuple);
-static CYTHON_INLINE void __Pyx_CyFunction_SetDefaultsKwDict(PyObject *m,
-                                                             PyObject *dict);
-static CYTHON_INLINE void __Pyx_CyFunction_SetAnnotationsDict(PyObject *m,
-                                                              PyObject *dict);
-static int __pyx_CyFunction_init(void);
-
-/* CythonFunction.proto */
-static PyObject *__Pyx_CyFunction_New(PyMethodDef *ml,
-                                      int flags, PyObject* qualname,
-                                      PyObject *closure,
-                                      PyObject *module, PyObject *globals,
-                                      PyObject* code);
-
 /* GetTopmostException.proto */
 #if CYTHON_USE_EXC_INFO_STACK
 static _PyErr_StackItem * __Pyx_PyErr_GetTopmostException(PyThreadState *tstate);
@@ -1662,16 +1570,6 @@ static int __Pyx_GetException(PyObject **type, PyObject **value, PyObject **tb);
 
 /* RaiseException.proto */
 static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject *cause);
-
-/* IncludeStringH.proto */
-#include <string.h>
-
-/* PyObject_GenericGetAttrNoDict.proto */
-#if CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP && PY_VERSION_HEX < 0x03070000
-static CYTHON_INLINE PyObject* __Pyx_PyObject_GenericGetAttrNoDict(PyObject* obj, PyObject* attr_name);
-#else
-#define __Pyx_PyObject_GenericGetAttrNoDict PyObject_GenericGetAttr
-#endif
 
 /* TypeImport.proto */
 #ifndef __PYX_HAVE_RT_ImportType_proto
@@ -1907,7 +1805,6 @@ static PyTypeObject *__pyx_ptype_5numpy_ndarray = 0;
 static PyTypeObject *__pyx_ptype_5numpy_ufunc = 0;
 
 /* Module declarations from 'colormap2gray_cy' */
-static PyTypeObject *__pyx_ptype_16colormap2gray_cy___pyx_scope_struct__main = 0;
 static int __pyx_f_16colormap2gray_cy_distance(__pyx_ctuple_int__and_int__and_int, PyArrayObject *, int __pyx_skip_dispatch); /*proto*/
 static PyObject *__pyx_f_16colormap2gray_cy_nearest(PyObject *, PyArrayObject *, int __pyx_skip_dispatch); /*proto*/
 static PyArrayObject *__pyx_f_16colormap2gray_cy_resize(PyArrayObject *, int, int __pyx_skip_dispatch); /*proto*/
@@ -1965,6 +1862,7 @@ static const char __pyx_k_main_2[] = "main";
 static const char __pyx_k_resize[] = "resize";
 static const char __pyx_k_imwrite[] = "imwrite";
 static const char __pyx_k_reshape[] = "reshape";
+static const char __pyx_k_cvtColor[] = "cvtColor";
 static const char __pyx_k_gray_img[] = "gray_img";
 static const char __pyx_k_img_path[] = "img_path";
 static const char __pyx_k_preamble[] = "preamble";
@@ -1983,20 +1881,20 @@ static const char __pyx_k_output_path[] = "output_path";
 static const char __pyx_k_color_values[] = "color_values";
 static const char __pyx_k_applyColorMap[] = "applyColorMap";
 static const char __pyx_k_interpolation[] = "interpolation";
-static const char __pyx_k_apply_along_axis[] = "apply_along_axis";
+static const char __pyx_k_COLOR_BGR2GRAY[] = "COLOR_BGR2GRAY";
 static const char __pyx_k_colormap2gray_cy[] = "colormap2gray_cy";
 static const char __pyx_k_include_set_name[] = "include_set_name";
 static const char __pyx_k_color_to_gray_map[] = "color_to_gray_map";
 static const char __pyx_k_matplotlib_colors[] = "matplotlib.colors";
 static const char __pyx_k_matplotlib_pyplot[] = "matplotlib.pyplot";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
-static const char __pyx_k_main_locals_lambda[] = "main.<locals>.<lambda>";
 static const char __pyx_k_colorbar_thermal_jpg[] = "./colorbar_thermal.jpg";
 static const char __pyx_k_colormap2gray_cy_pyx[] = "colormap2gray_cy.pyx";
 static const char __pyx_k_color_to_gray_map_keys[] = "color_to_gray_map_keys";
 static const char __pyx_k_LinearSegmentedColormap[] = "LinearSegmentedColormap";
 static const char __pyx_k_numpy_core_multiarray_failed_to[] = "numpy.core.multiarray failed to import";
 static const char __pyx_k_numpy_core_umath_failed_to_impor[] = "numpy.core.umath failed to import";
+static PyObject *__pyx_n_s_COLOR_BGR2GRAY;
 static PyObject *__pyx_n_s_INTER_AREA;
 static PyObject *__pyx_n_s_ImportError;
 static PyObject *__pyx_n_s_LinearSegmentedColormap;
@@ -2007,7 +1905,6 @@ static PyObject *__pyx_kp_s__7;
 static PyObject *__pyx_kp_s__8;
 static PyObject *__pyx_n_s__9;
 static PyObject *__pyx_n_s_applyColorMap;
-static PyObject *__pyx_n_s_apply_along_axis;
 static PyObject *__pyx_n_s_arange;
 static PyObject *__pyx_n_s_array;
 static PyObject *__pyx_n_s_bgr;
@@ -2022,6 +1919,7 @@ static PyObject *__pyx_kp_s_colorbar_thermal_jpg;
 static PyObject *__pyx_n_s_colormap2gray_cy;
 static PyObject *__pyx_kp_s_colormap2gray_cy_pyx;
 static PyObject *__pyx_n_s_cv2;
+static PyObject *__pyx_n_s_cvtColor;
 static PyObject *__pyx_n_s_data_path;
 static PyObject *__pyx_n_s_dtype;
 static PyObject *__pyx_n_s_enumerate;
@@ -2042,7 +1940,6 @@ static PyObject *__pyx_n_s_isdir;
 static PyObject *__pyx_n_s_keys;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_main_2;
-static PyObject *__pyx_n_s_main_locals_lambda;
 static PyObject *__pyx_n_s_map;
 static PyObject *__pyx_n_s_matplotlib_colors;
 static PyObject *__pyx_n_s_matplotlib_pyplot;
@@ -2075,9 +1972,7 @@ static PyObject *__pyx_n_s_zip;
 static PyObject *__pyx_pf_16colormap2gray_cy_distance(CYTHON_UNUSED PyObject *__pyx_self, __pyx_ctuple_int__and_int__and_int __pyx_v_ref_tuple, PyArrayObject *__pyx_v_obj_tuple); /* proto */
 static PyObject *__pyx_pf_16colormap2gray_cy_2nearest(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_ref_list, PyArrayObject *__pyx_v_obj_tuple); /* proto */
 static PyObject *__pyx_pf_16colormap2gray_cy_4resize(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_img, int __pyx_v_scale); /* proto */
-static PyObject *__pyx_lambda_funcdef_lambda(PyObject *__pyx_self, PyObject *__pyx_v_bgr); /* proto */
 static PyObject *__pyx_pf_16colormap2gray_cy_6main(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_opts); /* proto */
-static PyObject *__pyx_tp_new_16colormap2gray_cy___pyx_scope_struct__main(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static __Pyx_CachedCFunction __pyx_umethod_PyDict_Type_keys = {0, &__pyx_n_s_keys, 0, 0, 0};
 static __Pyx_CachedCFunction __pyx_umethod_PyString_Type_split = {0, &__pyx_n_s_split, 0, 0, 0};
 static PyObject *__pyx_int_1;
@@ -3170,91 +3065,18 @@ static PyObject *__pyx_pw_16colormap2gray_cy_7main(PyObject *__pyx_self, PyObjec
   return __pyx_r;
 }
 
-/* "colormap2gray_cy.pyx":84
- * 		color_image = cv2.imread(img_path)
- * 		color_image = resize(color_image,10)
- * 		gray_img = np.apply_along_axis(lambda bgr: color_to_gray_map[nearest(color_to_gray_map_keys,bgr)], 2, color_image)             # <<<<<<<<<<<<<<
- * 		cv2.imwrite(output_path,gray_img)
- */
-
-/* Python wrapper */
-static PyObject *__pyx_pw_16colormap2gray_cy_4main_lambda(PyObject *__pyx_self, PyObject *__pyx_v_bgr); /*proto*/
-static PyMethodDef __pyx_mdef_16colormap2gray_cy_4main_lambda = {"lambda", (PyCFunction)__pyx_pw_16colormap2gray_cy_4main_lambda, METH_O, 0};
-static PyObject *__pyx_pw_16colormap2gray_cy_4main_lambda(PyObject *__pyx_self, PyObject *__pyx_v_bgr) {
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("lambda (wrapper)", 0);
-  __pyx_r = __pyx_lambda_funcdef_lambda(__pyx_self, ((PyObject *)__pyx_v_bgr));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_lambda_funcdef_lambda(PyObject *__pyx_self, PyObject *__pyx_v_bgr) {
-  struct __pyx_obj_16colormap2gray_cy___pyx_scope_struct__main *__pyx_cur_scope;
-  struct __pyx_obj_16colormap2gray_cy___pyx_scope_struct__main *__pyx_outer_scope;
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  PyObject *__pyx_t_2 = NULL;
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("lambda", 0);
-  __pyx_outer_scope = (struct __pyx_obj_16colormap2gray_cy___pyx_scope_struct__main *) __Pyx_CyFunction_GetClosure(__pyx_self);
-  __pyx_cur_scope = __pyx_outer_scope;
-  __Pyx_XDECREF(__pyx_r);
-  if (unlikely(!__pyx_cur_scope->__pyx_v_color_to_gray_map)) { __Pyx_RaiseClosureNameError("color_to_gray_map"); __PYX_ERR(0, 84, __pyx_L1_error) }
-  if (unlikely(__pyx_cur_scope->__pyx_v_color_to_gray_map == Py_None)) {
-    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 84, __pyx_L1_error)
-  }
-  if (unlikely(!__pyx_cur_scope->__pyx_v_color_to_gray_map_keys)) { __Pyx_RaiseClosureNameError("color_to_gray_map_keys"); __PYX_ERR(0, 84, __pyx_L1_error) }
-  __pyx_t_1 = __pyx_cur_scope->__pyx_v_color_to_gray_map_keys;
-  __Pyx_INCREF(__pyx_t_1);
-  if (!(likely(((__pyx_v_bgr) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_bgr, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 84, __pyx_L1_error)
-  __pyx_t_2 = __pyx_f_16colormap2gray_cy_nearest(((PyObject*)__pyx_t_1), ((PyArrayObject *)__pyx_v_bgr), 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 84, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyDict_GetItem(__pyx_cur_scope->__pyx_v_color_to_gray_map, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 84, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_r = __pyx_t_1;
-  __pyx_t_1 = 0;
-  goto __pyx_L0;
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_AddTraceback("colormap2gray_cy.main.lambda", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "colormap2gray_cy.pyx":58
- * 	return cmap
- * 
- * def main(opts):             # <<<<<<<<<<<<<<
- * 	cdef np.ndarray[np.uint8_t,ndim=1] gray_values = np.arange(256,dtype=np.uint8)
- * 	cdef np.ndarray[np.uint8_t,ndim=3] cmap
- */
-
 static PyObject *__pyx_pf_16colormap2gray_cy_6main(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_opts) {
-  struct __pyx_obj_16colormap2gray_cy___pyx_scope_struct__main *__pyx_cur_scope;
   PyArrayObject *__pyx_v_gray_values = 0;
   PyArrayObject *__pyx_v_cmap = 0;
   PyObject *__pyx_v_color_values = NULL;
+  PyObject *__pyx_v_color_to_gray_map = 0;
   PyObject *__pyx_v_paths = 0;
   PyObject *__pyx_v_preamble = 0;
   PyObject *__pyx_v_img_path = 0;
   PyObject *__pyx_v_output_path = 0;
   PyArrayObject *__pyx_v_color_image = 0;
   PyArrayObject *__pyx_v_gray_img = 0;
+  CYTHON_UNUSED PyObject *__pyx_v_color_to_gray_map_keys = 0;
   CYTHON_UNUSED PyObject *__pyx_v__ = NULL;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_cmap;
   __Pyx_Buffer __pyx_pybuffer_cmap;
@@ -3290,14 +3112,6 @@ static PyObject *__pyx_pf_16colormap2gray_cy_6main(CYTHON_UNUSED PyObject *__pyx
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("main", 0);
-  __pyx_cur_scope = (struct __pyx_obj_16colormap2gray_cy___pyx_scope_struct__main *)__pyx_tp_new_16colormap2gray_cy___pyx_scope_struct__main(__pyx_ptype_16colormap2gray_cy___pyx_scope_struct__main, __pyx_empty_tuple, NULL);
-  if (unlikely(!__pyx_cur_scope)) {
-    __pyx_cur_scope = ((struct __pyx_obj_16colormap2gray_cy___pyx_scope_struct__main *)Py_None);
-    __Pyx_INCREF(Py_None);
-    __PYX_ERR(0, 58, __pyx_L1_error)
-  } else {
-    __Pyx_GOTREF(__pyx_cur_scope);
-  }
   __pyx_pybuffer_gray_values.pybuffer.buf = NULL;
   __pyx_pybuffer_gray_values.refcount = 0;
   __pyx_pybuffernd_gray_values.data = NULL;
@@ -3481,8 +3295,7 @@ static PyObject *__pyx_pf_16colormap2gray_cy_6main(CYTHON_UNUSED PyObject *__pyx
   __pyx_t_4 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyDict_Type)), __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 63, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __Pyx_GIVEREF(__pyx_t_4);
-  __pyx_cur_scope->__pyx_v_color_to_gray_map = ((PyObject*)__pyx_t_4);
+  __pyx_v_color_to_gray_map = ((PyObject*)__pyx_t_4);
   __pyx_t_4 = 0;
 
   /* "colormap2gray_cy.pyx":64
@@ -3727,13 +3540,12 @@ static PyObject *__pyx_pf_16colormap2gray_cy_6main(CYTHON_UNUSED PyObject *__pyx
  * 	for _,img_path in tqdm(enumerate(paths)):
  * 		output_path = "{}/{}{}".format(opts.output_dir,preamble,img_path.split("/")[-1])
  */
-  __pyx_t_4 = __Pyx_PyDict_Keys(__pyx_cur_scope->__pyx_v_color_to_gray_map); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 77, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyDict_Keys(__pyx_v_color_to_gray_map); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 77, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_3 = PySequence_List(__pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 77, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __Pyx_GIVEREF(__pyx_t_3);
-  __pyx_cur_scope->__pyx_v_color_to_gray_map_keys = ((PyObject*)__pyx_t_3);
+  __pyx_v_color_to_gray_map_keys = ((PyObject*)__pyx_t_3);
   __pyx_t_3 = 0;
 
   /* "colormap2gray_cy.pyx":78
@@ -3741,7 +3553,7 @@ static PyObject *__pyx_pf_16colormap2gray_cy_6main(CYTHON_UNUSED PyObject *__pyx
  * 	cdef list color_to_gray_map_keys = list(color_to_gray_map.keys())
  * 	for _,img_path in tqdm(enumerate(paths)):             # <<<<<<<<<<<<<<
  * 		output_path = "{}/{}{}".format(opts.output_dir,preamble,img_path.split("/")[-1])
- * 		if os.path.exists(output_path):
+ * 		#output_path = "{}/general_train{}".format(opts.output_dir,img_path.split("/")[-1])
  */
   __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_tqdm); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 78, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
@@ -3859,8 +3671,8 @@ static PyObject *__pyx_pf_16colormap2gray_cy_6main(CYTHON_UNUSED PyObject *__pyx
  * 	cdef list color_to_gray_map_keys = list(color_to_gray_map.keys())
  * 	for _,img_path in tqdm(enumerate(paths)):
  * 		output_path = "{}/{}{}".format(opts.output_dir,preamble,img_path.split("/")[-1])             # <<<<<<<<<<<<<<
+ * 		#output_path = "{}/general_train{}".format(opts.output_dir,img_path.split("/")[-1])
  * 		if os.path.exists(output_path):
- * 			continue
  */
     __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s__10, __pyx_n_s_format); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 79, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
@@ -3927,19 +3739,19 @@ static PyObject *__pyx_pf_16colormap2gray_cy_6main(CYTHON_UNUSED PyObject *__pyx
     __Pyx_XDECREF_SET(__pyx_v_output_path, ((PyObject*)__pyx_t_3));
     __pyx_t_3 = 0;
 
-    /* "colormap2gray_cy.pyx":80
- * 	for _,img_path in tqdm(enumerate(paths)):
+    /* "colormap2gray_cy.pyx":81
  * 		output_path = "{}/{}{}".format(opts.output_dir,preamble,img_path.split("/")[-1])
+ * 		#output_path = "{}/general_train{}".format(opts.output_dir,img_path.split("/")[-1])
  * 		if os.path.exists(output_path):             # <<<<<<<<<<<<<<
  * 			continue
  * 		color_image = cv2.imread(img_path)
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_os); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 80, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_os); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 81, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_path); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 80, __pyx_L1_error)
+    __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_path); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 81, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_10);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_exists); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 80, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_exists); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 81, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
     __pyx_t_10 = NULL;
@@ -3954,41 +3766,41 @@ static PyObject *__pyx_pf_16colormap2gray_cy_6main(CYTHON_UNUSED PyObject *__pyx
     }
     __pyx_t_3 = (__pyx_t_10) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_10, __pyx_v_output_path) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_v_output_path);
     __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
-    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 80, __pyx_L1_error)
+    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 81, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_15 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 80, __pyx_L1_error)
+    __pyx_t_15 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 81, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     if (__pyx_t_15) {
 
-      /* "colormap2gray_cy.pyx":81
- * 		output_path = "{}/{}{}".format(opts.output_dir,preamble,img_path.split("/")[-1])
+      /* "colormap2gray_cy.pyx":82
+ * 		#output_path = "{}/general_train{}".format(opts.output_dir,img_path.split("/")[-1])
  * 		if os.path.exists(output_path):
  * 			continue             # <<<<<<<<<<<<<<
  * 		color_image = cv2.imread(img_path)
- * 		color_image = resize(color_image,10)
+ * 		#color_image = resize(color_image,50)
  */
       goto __pyx_L5_continue;
 
-      /* "colormap2gray_cy.pyx":80
- * 	for _,img_path in tqdm(enumerate(paths)):
+      /* "colormap2gray_cy.pyx":81
  * 		output_path = "{}/{}{}".format(opts.output_dir,preamble,img_path.split("/")[-1])
+ * 		#output_path = "{}/general_train{}".format(opts.output_dir,img_path.split("/")[-1])
  * 		if os.path.exists(output_path):             # <<<<<<<<<<<<<<
  * 			continue
  * 		color_image = cv2.imread(img_path)
  */
     }
 
-    /* "colormap2gray_cy.pyx":82
+    /* "colormap2gray_cy.pyx":83
  * 		if os.path.exists(output_path):
  * 			continue
  * 		color_image = cv2.imread(img_path)             # <<<<<<<<<<<<<<
- * 		color_image = resize(color_image,10)
- * 		gray_img = np.apply_along_axis(lambda bgr: color_to_gray_map[nearest(color_to_gray_map_keys,bgr)], 2, color_image)
+ * 		#color_image = resize(color_image,50)
+ * 		gray_img = cv2.cvtColor(color_image,cv2.COLOR_BGR2GRAY)
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_cv2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 82, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_cv2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 83, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_imread); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 82, __pyx_L1_error)
+    __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_imread); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 83, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_10);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_1 = NULL;
@@ -4003,10 +3815,10 @@ static PyObject *__pyx_pf_16colormap2gray_cy_6main(CYTHON_UNUSED PyObject *__pyx
     }
     __pyx_t_3 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_10, __pyx_t_1, __pyx_v_img_path) : __Pyx_PyObject_CallOneArg(__pyx_t_10, __pyx_v_img_path);
     __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 82, __pyx_L1_error)
+    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 83, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-    if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 82, __pyx_L1_error)
+    if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 83, __pyx_L1_error)
     __pyx_t_19 = ((PyArrayObject *)__pyx_t_3);
     {
       __Pyx_BufFmt_StackElem __pyx_stack[1];
@@ -4023,61 +3835,36 @@ static PyObject *__pyx_pf_16colormap2gray_cy_6main(CYTHON_UNUSED PyObject *__pyx
         __pyx_t_9 = __pyx_t_8 = __pyx_t_7 = 0;
       }
       __pyx_pybuffernd_color_image.diminfo[0].strides = __pyx_pybuffernd_color_image.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_color_image.diminfo[0].shape = __pyx_pybuffernd_color_image.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_color_image.diminfo[1].strides = __pyx_pybuffernd_color_image.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_color_image.diminfo[1].shape = __pyx_pybuffernd_color_image.rcbuffer->pybuffer.shape[1]; __pyx_pybuffernd_color_image.diminfo[2].strides = __pyx_pybuffernd_color_image.rcbuffer->pybuffer.strides[2]; __pyx_pybuffernd_color_image.diminfo[2].shape = __pyx_pybuffernd_color_image.rcbuffer->pybuffer.shape[2];
-      if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 82, __pyx_L1_error)
+      if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 83, __pyx_L1_error)
     }
     __pyx_t_19 = 0;
     __Pyx_XDECREF_SET(__pyx_v_color_image, ((PyArrayObject *)__pyx_t_3));
     __pyx_t_3 = 0;
 
-    /* "colormap2gray_cy.pyx":83
- * 			continue
+    /* "colormap2gray_cy.pyx":85
  * 		color_image = cv2.imread(img_path)
- * 		color_image = resize(color_image,10)             # <<<<<<<<<<<<<<
- * 		gray_img = np.apply_along_axis(lambda bgr: color_to_gray_map[nearest(color_to_gray_map_keys,bgr)], 2, color_image)
+ * 		#color_image = resize(color_image,50)
+ * 		gray_img = cv2.cvtColor(color_image,cv2.COLOR_BGR2GRAY)             # <<<<<<<<<<<<<<
+ * 		#gray_img = np.apply_along_axis(lambda bgr: color_to_gray_map[nearest(color_to_gray_map_keys,bgr)], 2, color_image)
  * 		cv2.imwrite(output_path,gray_img)
  */
-    __pyx_t_3 = ((PyObject *)__pyx_f_16colormap2gray_cy_resize(((PyArrayObject *)__pyx_v_color_image), 10, 0)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 83, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    {
-      __Pyx_BufFmt_StackElem __pyx_stack[1];
-      __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_color_image.rcbuffer->pybuffer);
-      __pyx_t_6 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_color_image.rcbuffer->pybuffer, (PyObject*)((PyArrayObject *)__pyx_t_3), &__Pyx_TypeInfo_nn___pyx_t_5numpy_uint8_t, PyBUF_FORMAT| PyBUF_STRIDES, 3, 0, __pyx_stack);
-      if (unlikely(__pyx_t_6 < 0)) {
-        PyErr_Fetch(&__pyx_t_7, &__pyx_t_8, &__pyx_t_9);
-        if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_color_image.rcbuffer->pybuffer, (PyObject*)__pyx_v_color_image, &__Pyx_TypeInfo_nn___pyx_t_5numpy_uint8_t, PyBUF_FORMAT| PyBUF_STRIDES, 3, 0, __pyx_stack) == -1)) {
-          Py_XDECREF(__pyx_t_7); Py_XDECREF(__pyx_t_8); Py_XDECREF(__pyx_t_9);
-          __Pyx_RaiseBufferFallbackError();
-        } else {
-          PyErr_Restore(__pyx_t_7, __pyx_t_8, __pyx_t_9);
-        }
-        __pyx_t_7 = __pyx_t_8 = __pyx_t_9 = 0;
-      }
-      __pyx_pybuffernd_color_image.diminfo[0].strides = __pyx_pybuffernd_color_image.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_color_image.diminfo[0].shape = __pyx_pybuffernd_color_image.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_color_image.diminfo[1].strides = __pyx_pybuffernd_color_image.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_color_image.diminfo[1].shape = __pyx_pybuffernd_color_image.rcbuffer->pybuffer.shape[1]; __pyx_pybuffernd_color_image.diminfo[2].strides = __pyx_pybuffernd_color_image.rcbuffer->pybuffer.strides[2]; __pyx_pybuffernd_color_image.diminfo[2].shape = __pyx_pybuffernd_color_image.rcbuffer->pybuffer.shape[2];
-      if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 83, __pyx_L1_error)
-    }
-    __Pyx_DECREF_SET(__pyx_v_color_image, ((PyArrayObject *)__pyx_t_3));
-    __pyx_t_3 = 0;
-
-    /* "colormap2gray_cy.pyx":84
- * 		color_image = cv2.imread(img_path)
- * 		color_image = resize(color_image,10)
- * 		gray_img = np.apply_along_axis(lambda bgr: color_to_gray_map[nearest(color_to_gray_map_keys,bgr)], 2, color_image)             # <<<<<<<<<<<<<<
- * 		cv2.imwrite(output_path,gray_img)
- */
-    __Pyx_GetModuleGlobalName(__pyx_t_10, __pyx_n_s_np); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 84, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_10, __pyx_n_s_cv2); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 85, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_10);
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_apply_along_axis); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 84, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_cvtColor); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 85, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-    __pyx_t_10 = __Pyx_CyFunction_New(&__pyx_mdef_16colormap2gray_cy_4main_lambda, 0, __pyx_n_s_main_locals_lambda, ((PyObject*)__pyx_cur_scope), __pyx_n_s_colormap2gray_cy, __pyx_d, NULL); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 84, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_10, __pyx_n_s_cv2); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 85, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_10);
-    __pyx_t_11 = NULL;
+    __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_COLOR_BGR2GRAY); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 85, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_11);
+    __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+    __pyx_t_10 = NULL;
     __pyx_t_6 = 0;
     if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_1))) {
-      __pyx_t_11 = PyMethod_GET_SELF(__pyx_t_1);
-      if (likely(__pyx_t_11)) {
+      __pyx_t_10 = PyMethod_GET_SELF(__pyx_t_1);
+      if (likely(__pyx_t_10)) {
         PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
-        __Pyx_INCREF(__pyx_t_11);
+        __Pyx_INCREF(__pyx_t_10);
         __Pyx_INCREF(function);
         __Pyx_DECREF_SET(__pyx_t_1, function);
         __pyx_t_6 = 1;
@@ -4085,73 +3872,70 @@ static PyObject *__pyx_pf_16colormap2gray_cy_6main(CYTHON_UNUSED PyObject *__pyx
     }
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_1)) {
-      PyObject *__pyx_temp[4] = {__pyx_t_11, __pyx_t_10, __pyx_int_2, ((PyObject *)__pyx_v_color_image)};
-      __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_6, 3+__pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 84, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
+      PyObject *__pyx_temp[3] = {__pyx_t_10, ((PyObject *)__pyx_v_color_image), __pyx_t_11};
+      __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 85, __pyx_L1_error)
+      __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
       __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
     } else
     #endif
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_1)) {
-      PyObject *__pyx_temp[4] = {__pyx_t_11, __pyx_t_10, __pyx_int_2, ((PyObject *)__pyx_v_color_image)};
-      __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_6, 3+__pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 84, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
+      PyObject *__pyx_temp[3] = {__pyx_t_10, ((PyObject *)__pyx_v_color_image), __pyx_t_11};
+      __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 85, __pyx_L1_error)
+      __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
       __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
     } else
     #endif
     {
-      __pyx_t_2 = PyTuple_New(3+__pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 84, __pyx_L1_error)
+      __pyx_t_2 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 85, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      if (__pyx_t_11) {
-        __Pyx_GIVEREF(__pyx_t_11); PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_11); __pyx_t_11 = NULL;
+      if (__pyx_t_10) {
+        __Pyx_GIVEREF(__pyx_t_10); PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_10); __pyx_t_10 = NULL;
       }
-      __Pyx_GIVEREF(__pyx_t_10);
-      PyTuple_SET_ITEM(__pyx_t_2, 0+__pyx_t_6, __pyx_t_10);
-      __Pyx_INCREF(__pyx_int_2);
-      __Pyx_GIVEREF(__pyx_int_2);
-      PyTuple_SET_ITEM(__pyx_t_2, 1+__pyx_t_6, __pyx_int_2);
       __Pyx_INCREF(((PyObject *)__pyx_v_color_image));
       __Pyx_GIVEREF(((PyObject *)__pyx_v_color_image));
-      PyTuple_SET_ITEM(__pyx_t_2, 2+__pyx_t_6, ((PyObject *)__pyx_v_color_image));
-      __pyx_t_10 = 0;
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_2, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 84, __pyx_L1_error)
+      PyTuple_SET_ITEM(__pyx_t_2, 0+__pyx_t_6, ((PyObject *)__pyx_v_color_image));
+      __Pyx_GIVEREF(__pyx_t_11);
+      PyTuple_SET_ITEM(__pyx_t_2, 1+__pyx_t_6, __pyx_t_11);
+      __pyx_t_11 = 0;
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_2, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 85, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     }
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 84, __pyx_L1_error)
+    if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 85, __pyx_L1_error)
     __pyx_t_20 = ((PyArrayObject *)__pyx_t_3);
     {
       __Pyx_BufFmt_StackElem __pyx_stack[1];
       __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_gray_img.rcbuffer->pybuffer);
       __pyx_t_6 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_gray_img.rcbuffer->pybuffer, (PyObject*)__pyx_t_20, &__Pyx_TypeInfo_nn___pyx_t_5numpy_uint8_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack);
       if (unlikely(__pyx_t_6 < 0)) {
-        PyErr_Fetch(&__pyx_t_9, &__pyx_t_8, &__pyx_t_7);
+        PyErr_Fetch(&__pyx_t_7, &__pyx_t_8, &__pyx_t_9);
         if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_gray_img.rcbuffer->pybuffer, (PyObject*)__pyx_v_gray_img, &__Pyx_TypeInfo_nn___pyx_t_5numpy_uint8_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) {
-          Py_XDECREF(__pyx_t_9); Py_XDECREF(__pyx_t_8); Py_XDECREF(__pyx_t_7);
+          Py_XDECREF(__pyx_t_7); Py_XDECREF(__pyx_t_8); Py_XDECREF(__pyx_t_9);
           __Pyx_RaiseBufferFallbackError();
         } else {
-          PyErr_Restore(__pyx_t_9, __pyx_t_8, __pyx_t_7);
+          PyErr_Restore(__pyx_t_7, __pyx_t_8, __pyx_t_9);
         }
-        __pyx_t_9 = __pyx_t_8 = __pyx_t_7 = 0;
+        __pyx_t_7 = __pyx_t_8 = __pyx_t_9 = 0;
       }
       __pyx_pybuffernd_gray_img.diminfo[0].strides = __pyx_pybuffernd_gray_img.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_gray_img.diminfo[0].shape = __pyx_pybuffernd_gray_img.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_gray_img.diminfo[1].strides = __pyx_pybuffernd_gray_img.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_gray_img.diminfo[1].shape = __pyx_pybuffernd_gray_img.rcbuffer->pybuffer.shape[1];
-      if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 84, __pyx_L1_error)
+      if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 85, __pyx_L1_error)
     }
     __pyx_t_20 = 0;
     __Pyx_XDECREF_SET(__pyx_v_gray_img, ((PyArrayObject *)__pyx_t_3));
     __pyx_t_3 = 0;
 
-    /* "colormap2gray_cy.pyx":85
- * 		color_image = resize(color_image,10)
- * 		gray_img = np.apply_along_axis(lambda bgr: color_to_gray_map[nearest(color_to_gray_map_keys,bgr)], 2, color_image)
+    /* "colormap2gray_cy.pyx":87
+ * 		gray_img = cv2.cvtColor(color_image,cv2.COLOR_BGR2GRAY)
+ * 		#gray_img = np.apply_along_axis(lambda bgr: color_to_gray_map[nearest(color_to_gray_map_keys,bgr)], 2, color_image)
  * 		cv2.imwrite(output_path,gray_img)             # <<<<<<<<<<<<<<
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_cv2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 85, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_cv2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 87, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_imwrite); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 85, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_imwrite); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 87, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_1 = NULL;
@@ -4169,7 +3953,7 @@ static PyObject *__pyx_pf_16colormap2gray_cy_6main(CYTHON_UNUSED PyObject *__pyx
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[3] = {__pyx_t_1, __pyx_v_output_path, ((PyObject *)__pyx_v_gray_img)};
-      __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 85, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 87, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
       __Pyx_GOTREF(__pyx_t_3);
     } else
@@ -4177,26 +3961,26 @@ static PyObject *__pyx_pf_16colormap2gray_cy_6main(CYTHON_UNUSED PyObject *__pyx
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[3] = {__pyx_t_1, __pyx_v_output_path, ((PyObject *)__pyx_v_gray_img)};
-      __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 85, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 87, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
       __Pyx_GOTREF(__pyx_t_3);
     } else
     #endif
     {
-      __pyx_t_10 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 85, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_10);
+      __pyx_t_11 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 87, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_11);
       if (__pyx_t_1) {
-        __Pyx_GIVEREF(__pyx_t_1); PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_1); __pyx_t_1 = NULL;
+        __Pyx_GIVEREF(__pyx_t_1); PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_t_1); __pyx_t_1 = NULL;
       }
       __Pyx_INCREF(__pyx_v_output_path);
       __Pyx_GIVEREF(__pyx_v_output_path);
-      PyTuple_SET_ITEM(__pyx_t_10, 0+__pyx_t_6, __pyx_v_output_path);
+      PyTuple_SET_ITEM(__pyx_t_11, 0+__pyx_t_6, __pyx_v_output_path);
       __Pyx_INCREF(((PyObject *)__pyx_v_gray_img));
       __Pyx_GIVEREF(((PyObject *)__pyx_v_gray_img));
-      PyTuple_SET_ITEM(__pyx_t_10, 1+__pyx_t_6, ((PyObject *)__pyx_v_gray_img));
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_10, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 85, __pyx_L1_error)
+      PyTuple_SET_ITEM(__pyx_t_11, 1+__pyx_t_6, ((PyObject *)__pyx_v_gray_img));
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_11, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 87, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
     }
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -4206,7 +3990,7 @@ static PyObject *__pyx_pf_16colormap2gray_cy_6main(CYTHON_UNUSED PyObject *__pyx
  * 	cdef list color_to_gray_map_keys = list(color_to_gray_map.keys())
  * 	for _,img_path in tqdm(enumerate(paths)):             # <<<<<<<<<<<<<<
  * 		output_path = "{}/{}{}".format(opts.output_dir,preamble,img_path.split("/")[-1])
- * 		if os.path.exists(output_path):
+ * 		#output_path = "{}/general_train{}".format(opts.output_dir,img_path.split("/")[-1])
  */
     __pyx_L5_continue:;
   }
@@ -4253,14 +4037,15 @@ static PyObject *__pyx_pf_16colormap2gray_cy_6main(CYTHON_UNUSED PyObject *__pyx
   __Pyx_XDECREF((PyObject *)__pyx_v_gray_values);
   __Pyx_XDECREF((PyObject *)__pyx_v_cmap);
   __Pyx_XDECREF(__pyx_v_color_values);
+  __Pyx_XDECREF(__pyx_v_color_to_gray_map);
   __Pyx_XDECREF(__pyx_v_paths);
   __Pyx_XDECREF(__pyx_v_preamble);
   __Pyx_XDECREF(__pyx_v_img_path);
   __Pyx_XDECREF(__pyx_v_output_path);
   __Pyx_XDECREF((PyObject *)__pyx_v_color_image);
   __Pyx_XDECREF((PyObject *)__pyx_v_gray_img);
+  __Pyx_XDECREF(__pyx_v_color_to_gray_map_keys);
   __Pyx_XDECREF(__pyx_v__);
-  __Pyx_DECREF(((PyObject *)__pyx_cur_scope));
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
@@ -5109,128 +4894,6 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
   return __pyx_r;
 }
 
-static struct __pyx_obj_16colormap2gray_cy___pyx_scope_struct__main *__pyx_freelist_16colormap2gray_cy___pyx_scope_struct__main[8];
-static int __pyx_freecount_16colormap2gray_cy___pyx_scope_struct__main = 0;
-
-static PyObject *__pyx_tp_new_16colormap2gray_cy___pyx_scope_struct__main(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
-  PyObject *o;
-  if (CYTHON_COMPILING_IN_CPYTHON && likely((__pyx_freecount_16colormap2gray_cy___pyx_scope_struct__main > 0) & (t->tp_basicsize == sizeof(struct __pyx_obj_16colormap2gray_cy___pyx_scope_struct__main)))) {
-    o = (PyObject*)__pyx_freelist_16colormap2gray_cy___pyx_scope_struct__main[--__pyx_freecount_16colormap2gray_cy___pyx_scope_struct__main];
-    memset(o, 0, sizeof(struct __pyx_obj_16colormap2gray_cy___pyx_scope_struct__main));
-    (void) PyObject_INIT(o, t);
-    PyObject_GC_Track(o);
-  } else {
-    o = (*t->tp_alloc)(t, 0);
-    if (unlikely(!o)) return 0;
-  }
-  return o;
-}
-
-static void __pyx_tp_dealloc_16colormap2gray_cy___pyx_scope_struct__main(PyObject *o) {
-  struct __pyx_obj_16colormap2gray_cy___pyx_scope_struct__main *p = (struct __pyx_obj_16colormap2gray_cy___pyx_scope_struct__main *)o;
-  PyObject_GC_UnTrack(o);
-  Py_CLEAR(p->__pyx_v_color_to_gray_map);
-  Py_CLEAR(p->__pyx_v_color_to_gray_map_keys);
-  if (CYTHON_COMPILING_IN_CPYTHON && ((__pyx_freecount_16colormap2gray_cy___pyx_scope_struct__main < 8) & (Py_TYPE(o)->tp_basicsize == sizeof(struct __pyx_obj_16colormap2gray_cy___pyx_scope_struct__main)))) {
-    __pyx_freelist_16colormap2gray_cy___pyx_scope_struct__main[__pyx_freecount_16colormap2gray_cy___pyx_scope_struct__main++] = ((struct __pyx_obj_16colormap2gray_cy___pyx_scope_struct__main *)o);
-  } else {
-    (*Py_TYPE(o)->tp_free)(o);
-  }
-}
-
-static int __pyx_tp_traverse_16colormap2gray_cy___pyx_scope_struct__main(PyObject *o, visitproc v, void *a) {
-  int e;
-  struct __pyx_obj_16colormap2gray_cy___pyx_scope_struct__main *p = (struct __pyx_obj_16colormap2gray_cy___pyx_scope_struct__main *)o;
-  if (p->__pyx_v_color_to_gray_map) {
-    e = (*v)(p->__pyx_v_color_to_gray_map, a); if (e) return e;
-  }
-  if (p->__pyx_v_color_to_gray_map_keys) {
-    e = (*v)(p->__pyx_v_color_to_gray_map_keys, a); if (e) return e;
-  }
-  return 0;
-}
-
-static int __pyx_tp_clear_16colormap2gray_cy___pyx_scope_struct__main(PyObject *o) {
-  PyObject* tmp;
-  struct __pyx_obj_16colormap2gray_cy___pyx_scope_struct__main *p = (struct __pyx_obj_16colormap2gray_cy___pyx_scope_struct__main *)o;
-  tmp = ((PyObject*)p->__pyx_v_color_to_gray_map);
-  p->__pyx_v_color_to_gray_map = ((PyObject*)Py_None); Py_INCREF(Py_None);
-  Py_XDECREF(tmp);
-  tmp = ((PyObject*)p->__pyx_v_color_to_gray_map_keys);
-  p->__pyx_v_color_to_gray_map_keys = ((PyObject*)Py_None); Py_INCREF(Py_None);
-  Py_XDECREF(tmp);
-  return 0;
-}
-
-static PyTypeObject __pyx_type_16colormap2gray_cy___pyx_scope_struct__main = {
-  PyVarObject_HEAD_INIT(0, 0)
-  "colormap2gray_cy.__pyx_scope_struct__main", /*tp_name*/
-  sizeof(struct __pyx_obj_16colormap2gray_cy___pyx_scope_struct__main), /*tp_basicsize*/
-  0, /*tp_itemsize*/
-  __pyx_tp_dealloc_16colormap2gray_cy___pyx_scope_struct__main, /*tp_dealloc*/
-  #if PY_VERSION_HEX < 0x030800b4
-  0, /*tp_print*/
-  #endif
-  #if PY_VERSION_HEX >= 0x030800b4
-  0, /*tp_vectorcall_offset*/
-  #endif
-  0, /*tp_getattr*/
-  0, /*tp_setattr*/
-  #if PY_MAJOR_VERSION < 3
-  0, /*tp_compare*/
-  #endif
-  #if PY_MAJOR_VERSION >= 3
-  0, /*tp_as_async*/
-  #endif
-  0, /*tp_repr*/
-  0, /*tp_as_number*/
-  0, /*tp_as_sequence*/
-  0, /*tp_as_mapping*/
-  0, /*tp_hash*/
-  0, /*tp_call*/
-  0, /*tp_str*/
-  0, /*tp_getattro*/
-  0, /*tp_setattro*/
-  0, /*tp_as_buffer*/
-  Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_HAVE_GC, /*tp_flags*/
-  0, /*tp_doc*/
-  __pyx_tp_traverse_16colormap2gray_cy___pyx_scope_struct__main, /*tp_traverse*/
-  __pyx_tp_clear_16colormap2gray_cy___pyx_scope_struct__main, /*tp_clear*/
-  0, /*tp_richcompare*/
-  0, /*tp_weaklistoffset*/
-  0, /*tp_iter*/
-  0, /*tp_iternext*/
-  0, /*tp_methods*/
-  0, /*tp_members*/
-  0, /*tp_getset*/
-  0, /*tp_base*/
-  0, /*tp_dict*/
-  0, /*tp_descr_get*/
-  0, /*tp_descr_set*/
-  0, /*tp_dictoffset*/
-  0, /*tp_init*/
-  0, /*tp_alloc*/
-  __pyx_tp_new_16colormap2gray_cy___pyx_scope_struct__main, /*tp_new*/
-  0, /*tp_free*/
-  0, /*tp_is_gc*/
-  0, /*tp_bases*/
-  0, /*tp_mro*/
-  0, /*tp_cache*/
-  0, /*tp_subclasses*/
-  0, /*tp_weaklist*/
-  0, /*tp_del*/
-  0, /*tp_version_tag*/
-  #if PY_VERSION_HEX >= 0x030400a1
-  0, /*tp_finalize*/
-  #endif
-  #if PY_VERSION_HEX >= 0x030800b1
-  0, /*tp_vectorcall*/
-  #endif
-  #if PY_VERSION_HEX >= 0x030800b4 && PY_VERSION_HEX < 0x03090000
-  0, /*tp_print*/
-  #endif
-};
-
 static PyMethodDef __pyx_methods[] = {
   {"distance", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_16colormap2gray_cy_1distance, METH_VARARGS|METH_KEYWORDS, 0},
   {"nearest", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_16colormap2gray_cy_3nearest, METH_VARARGS|METH_KEYWORDS, 0},
@@ -5280,6 +4943,7 @@ static struct PyModuleDef __pyx_moduledef = {
 #endif
 
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
+  {&__pyx_n_s_COLOR_BGR2GRAY, __pyx_k_COLOR_BGR2GRAY, sizeof(__pyx_k_COLOR_BGR2GRAY), 0, 0, 1, 1},
   {&__pyx_n_s_INTER_AREA, __pyx_k_INTER_AREA, sizeof(__pyx_k_INTER_AREA), 0, 0, 1, 1},
   {&__pyx_n_s_ImportError, __pyx_k_ImportError, sizeof(__pyx_k_ImportError), 0, 0, 1, 1},
   {&__pyx_n_s_LinearSegmentedColormap, __pyx_k_LinearSegmentedColormap, sizeof(__pyx_k_LinearSegmentedColormap), 0, 0, 1, 1},
@@ -5290,7 +4954,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s__8, __pyx_k__8, sizeof(__pyx_k__8), 0, 0, 1, 0},
   {&__pyx_n_s__9, __pyx_k__9, sizeof(__pyx_k__9), 0, 0, 1, 1},
   {&__pyx_n_s_applyColorMap, __pyx_k_applyColorMap, sizeof(__pyx_k_applyColorMap), 0, 0, 1, 1},
-  {&__pyx_n_s_apply_along_axis, __pyx_k_apply_along_axis, sizeof(__pyx_k_apply_along_axis), 0, 0, 1, 1},
   {&__pyx_n_s_arange, __pyx_k_arange, sizeof(__pyx_k_arange), 0, 0, 1, 1},
   {&__pyx_n_s_array, __pyx_k_array, sizeof(__pyx_k_array), 0, 0, 1, 1},
   {&__pyx_n_s_bgr, __pyx_k_bgr, sizeof(__pyx_k_bgr), 0, 0, 1, 1},
@@ -5305,6 +4968,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_colormap2gray_cy, __pyx_k_colormap2gray_cy, sizeof(__pyx_k_colormap2gray_cy), 0, 0, 1, 1},
   {&__pyx_kp_s_colormap2gray_cy_pyx, __pyx_k_colormap2gray_cy_pyx, sizeof(__pyx_k_colormap2gray_cy_pyx), 0, 0, 1, 0},
   {&__pyx_n_s_cv2, __pyx_k_cv2, sizeof(__pyx_k_cv2), 0, 0, 1, 1},
+  {&__pyx_n_s_cvtColor, __pyx_k_cvtColor, sizeof(__pyx_k_cvtColor), 0, 0, 1, 1},
   {&__pyx_n_s_data_path, __pyx_k_data_path, sizeof(__pyx_k_data_path), 0, 0, 1, 1},
   {&__pyx_n_s_dtype, __pyx_k_dtype, sizeof(__pyx_k_dtype), 0, 0, 1, 1},
   {&__pyx_n_s_enumerate, __pyx_k_enumerate, sizeof(__pyx_k_enumerate), 0, 0, 1, 1},
@@ -5325,7 +4989,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_keys, __pyx_k_keys, sizeof(__pyx_k_keys), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_s_main_2, __pyx_k_main_2, sizeof(__pyx_k_main_2), 0, 0, 1, 1},
-  {&__pyx_n_s_main_locals_lambda, __pyx_k_main_locals_lambda, sizeof(__pyx_k_main_locals_lambda), 0, 0, 1, 1},
   {&__pyx_n_s_map, __pyx_k_map, sizeof(__pyx_k_map), 0, 0, 1, 1},
   {&__pyx_n_s_matplotlib_colors, __pyx_k_matplotlib_colors, sizeof(__pyx_k_matplotlib_colors), 0, 0, 1, 1},
   {&__pyx_n_s_matplotlib_pyplot, __pyx_k_matplotlib_pyplot, sizeof(__pyx_k_matplotlib_pyplot), 0, 0, 1, 1},
@@ -5505,24 +5168,10 @@ static int __Pyx_modinit_function_export_code(void) {
 
 static int __Pyx_modinit_type_init_code(void) {
   __Pyx_RefNannyDeclarations
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_init_code", 0);
   /*--- Type init code ---*/
-  if (PyType_Ready(&__pyx_type_16colormap2gray_cy___pyx_scope_struct__main) < 0) __PYX_ERR(0, 58, __pyx_L1_error)
-  #if PY_VERSION_HEX < 0x030800B1
-  __pyx_type_16colormap2gray_cy___pyx_scope_struct__main.tp_print = 0;
-  #endif
-  if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_16colormap2gray_cy___pyx_scope_struct__main.tp_dictoffset && __pyx_type_16colormap2gray_cy___pyx_scope_struct__main.tp_getattro == PyObject_GenericGetAttr)) {
-    __pyx_type_16colormap2gray_cy___pyx_scope_struct__main.tp_getattro = __Pyx_PyObject_GenericGetAttrNoDict;
-  }
-  __pyx_ptype_16colormap2gray_cy___pyx_scope_struct__main = &__pyx_type_16colormap2gray_cy___pyx_scope_struct__main;
   __Pyx_RefNannyFinishContext();
   return 0;
-  __pyx_L1_error:;
-  __Pyx_RefNannyFinishContext();
-  return -1;
 }
 
 static int __Pyx_modinit_type_import_code(void) {
@@ -5775,7 +5424,7 @@ if (!__Pyx_RefNanny) {
   (void)__Pyx_modinit_global_init_code();
   (void)__Pyx_modinit_variable_export_code();
   (void)__Pyx_modinit_function_export_code();
-  if (unlikely(__Pyx_modinit_type_init_code() < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+  (void)__Pyx_modinit_type_init_code();
   if (unlikely(__Pyx_modinit_type_import_code() < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
   (void)__Pyx_modinit_variable_import_code();
   (void)__Pyx_modinit_function_import_code();
@@ -7281,35 +6930,6 @@ static PyObject *__Pyx_PyObject_GetItem(PyObject *obj, PyObject* key) {
 }
 #endif
 
-/* None */
-  static CYTHON_INLINE void __Pyx_RaiseClosureNameError(const char *varname) {
-    PyErr_Format(PyExc_NameError, "free variable '%s' referenced before assignment in enclosing scope", varname);
-}
-
-/* DictGetItem */
-  #if PY_MAJOR_VERSION >= 3 && !CYTHON_COMPILING_IN_PYPY
-static PyObject *__Pyx_PyDict_GetItem(PyObject *d, PyObject* key) {
-    PyObject *value;
-    value = PyDict_GetItemWithError(d, key);
-    if (unlikely(!value)) {
-        if (!PyErr_Occurred()) {
-            if (unlikely(PyTuple_Check(key))) {
-                PyObject* args = PyTuple_Pack(1, key);
-                if (likely(args)) {
-                    PyErr_SetObject(PyExc_KeyError, args);
-                    Py_DECREF(args);
-                }
-            } else {
-                PyErr_SetObject(PyExc_KeyError, key);
-            }
-        }
-        return NULL;
-    }
-    Py_INCREF(value);
-    return value;
-}
-#endif
-
 /* UnpackUnboundCMethod */
   static int __Pyx_TryUnpackUnboundCMethod(__Pyx_CachedCFunction* target) {
     PyObject *method;
@@ -7467,662 +7087,6 @@ static PyObject* __Pyx__CallUnboundCMethod1(__Pyx_CachedCFunction* cfunc, PyObje
 bad:
     Py_XDECREF(args);
     return result;
-}
-
-/* FetchCommonType */
-  static PyTypeObject* __Pyx_FetchCommonType(PyTypeObject* type) {
-    PyObject* fake_module;
-    PyTypeObject* cached_type = NULL;
-    fake_module = PyImport_AddModule((char*) "_cython_" CYTHON_ABI);
-    if (!fake_module) return NULL;
-    Py_INCREF(fake_module);
-    cached_type = (PyTypeObject*) PyObject_GetAttrString(fake_module, type->tp_name);
-    if (cached_type) {
-        if (!PyType_Check((PyObject*)cached_type)) {
-            PyErr_Format(PyExc_TypeError,
-                "Shared Cython type %.200s is not a type object",
-                type->tp_name);
-            goto bad;
-        }
-        if (cached_type->tp_basicsize != type->tp_basicsize) {
-            PyErr_Format(PyExc_TypeError,
-                "Shared Cython type %.200s has the wrong size, try recompiling",
-                type->tp_name);
-            goto bad;
-        }
-    } else {
-        if (!PyErr_ExceptionMatches(PyExc_AttributeError)) goto bad;
-        PyErr_Clear();
-        if (PyType_Ready(type) < 0) goto bad;
-        if (PyObject_SetAttrString(fake_module, type->tp_name, (PyObject*) type) < 0)
-            goto bad;
-        Py_INCREF(type);
-        cached_type = type;
-    }
-done:
-    Py_DECREF(fake_module);
-    return cached_type;
-bad:
-    Py_XDECREF(cached_type);
-    cached_type = NULL;
-    goto done;
-}
-
-/* CythonFunctionShared */
-  #include <structmember.h>
-static PyObject *
-__Pyx_CyFunction_get_doc(__pyx_CyFunctionObject *op, CYTHON_UNUSED void *closure)
-{
-    if (unlikely(op->func_doc == NULL)) {
-        if (op->func.m_ml->ml_doc) {
-#if PY_MAJOR_VERSION >= 3
-            op->func_doc = PyUnicode_FromString(op->func.m_ml->ml_doc);
-#else
-            op->func_doc = PyString_FromString(op->func.m_ml->ml_doc);
-#endif
-            if (unlikely(op->func_doc == NULL))
-                return NULL;
-        } else {
-            Py_INCREF(Py_None);
-            return Py_None;
-        }
-    }
-    Py_INCREF(op->func_doc);
-    return op->func_doc;
-}
-static int
-__Pyx_CyFunction_set_doc(__pyx_CyFunctionObject *op, PyObject *value, CYTHON_UNUSED void *context)
-{
-    PyObject *tmp = op->func_doc;
-    if (value == NULL) {
-        value = Py_None;
-    }
-    Py_INCREF(value);
-    op->func_doc = value;
-    Py_XDECREF(tmp);
-    return 0;
-}
-static PyObject *
-__Pyx_CyFunction_get_name(__pyx_CyFunctionObject *op, CYTHON_UNUSED void *context)
-{
-    if (unlikely(op->func_name == NULL)) {
-#if PY_MAJOR_VERSION >= 3
-        op->func_name = PyUnicode_InternFromString(op->func.m_ml->ml_name);
-#else
-        op->func_name = PyString_InternFromString(op->func.m_ml->ml_name);
-#endif
-        if (unlikely(op->func_name == NULL))
-            return NULL;
-    }
-    Py_INCREF(op->func_name);
-    return op->func_name;
-}
-static int
-__Pyx_CyFunction_set_name(__pyx_CyFunctionObject *op, PyObject *value, CYTHON_UNUSED void *context)
-{
-    PyObject *tmp;
-#if PY_MAJOR_VERSION >= 3
-    if (unlikely(value == NULL || !PyUnicode_Check(value)))
-#else
-    if (unlikely(value == NULL || !PyString_Check(value)))
-#endif
-    {
-        PyErr_SetString(PyExc_TypeError,
-                        "__name__ must be set to a string object");
-        return -1;
-    }
-    tmp = op->func_name;
-    Py_INCREF(value);
-    op->func_name = value;
-    Py_XDECREF(tmp);
-    return 0;
-}
-static PyObject *
-__Pyx_CyFunction_get_qualname(__pyx_CyFunctionObject *op, CYTHON_UNUSED void *context)
-{
-    Py_INCREF(op->func_qualname);
-    return op->func_qualname;
-}
-static int
-__Pyx_CyFunction_set_qualname(__pyx_CyFunctionObject *op, PyObject *value, CYTHON_UNUSED void *context)
-{
-    PyObject *tmp;
-#if PY_MAJOR_VERSION >= 3
-    if (unlikely(value == NULL || !PyUnicode_Check(value)))
-#else
-    if (unlikely(value == NULL || !PyString_Check(value)))
-#endif
-    {
-        PyErr_SetString(PyExc_TypeError,
-                        "__qualname__ must be set to a string object");
-        return -1;
-    }
-    tmp = op->func_qualname;
-    Py_INCREF(value);
-    op->func_qualname = value;
-    Py_XDECREF(tmp);
-    return 0;
-}
-static PyObject *
-__Pyx_CyFunction_get_self(__pyx_CyFunctionObject *m, CYTHON_UNUSED void *closure)
-{
-    PyObject *self;
-    self = m->func_closure;
-    if (self == NULL)
-        self = Py_None;
-    Py_INCREF(self);
-    return self;
-}
-static PyObject *
-__Pyx_CyFunction_get_dict(__pyx_CyFunctionObject *op, CYTHON_UNUSED void *context)
-{
-    if (unlikely(op->func_dict == NULL)) {
-        op->func_dict = PyDict_New();
-        if (unlikely(op->func_dict == NULL))
-            return NULL;
-    }
-    Py_INCREF(op->func_dict);
-    return op->func_dict;
-}
-static int
-__Pyx_CyFunction_set_dict(__pyx_CyFunctionObject *op, PyObject *value, CYTHON_UNUSED void *context)
-{
-    PyObject *tmp;
-    if (unlikely(value == NULL)) {
-        PyErr_SetString(PyExc_TypeError,
-               "function's dictionary may not be deleted");
-        return -1;
-    }
-    if (unlikely(!PyDict_Check(value))) {
-        PyErr_SetString(PyExc_TypeError,
-               "setting function's dictionary to a non-dict");
-        return -1;
-    }
-    tmp = op->func_dict;
-    Py_INCREF(value);
-    op->func_dict = value;
-    Py_XDECREF(tmp);
-    return 0;
-}
-static PyObject *
-__Pyx_CyFunction_get_globals(__pyx_CyFunctionObject *op, CYTHON_UNUSED void *context)
-{
-    Py_INCREF(op->func_globals);
-    return op->func_globals;
-}
-static PyObject *
-__Pyx_CyFunction_get_closure(CYTHON_UNUSED __pyx_CyFunctionObject *op, CYTHON_UNUSED void *context)
-{
-    Py_INCREF(Py_None);
-    return Py_None;
-}
-static PyObject *
-__Pyx_CyFunction_get_code(__pyx_CyFunctionObject *op, CYTHON_UNUSED void *context)
-{
-    PyObject* result = (op->func_code) ? op->func_code : Py_None;
-    Py_INCREF(result);
-    return result;
-}
-static int
-__Pyx_CyFunction_init_defaults(__pyx_CyFunctionObject *op) {
-    int result = 0;
-    PyObject *res = op->defaults_getter((PyObject *) op);
-    if (unlikely(!res))
-        return -1;
-    #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    op->defaults_tuple = PyTuple_GET_ITEM(res, 0);
-    Py_INCREF(op->defaults_tuple);
-    op->defaults_kwdict = PyTuple_GET_ITEM(res, 1);
-    Py_INCREF(op->defaults_kwdict);
-    #else
-    op->defaults_tuple = PySequence_ITEM(res, 0);
-    if (unlikely(!op->defaults_tuple)) result = -1;
-    else {
-        op->defaults_kwdict = PySequence_ITEM(res, 1);
-        if (unlikely(!op->defaults_kwdict)) result = -1;
-    }
-    #endif
-    Py_DECREF(res);
-    return result;
-}
-static int
-__Pyx_CyFunction_set_defaults(__pyx_CyFunctionObject *op, PyObject* value, CYTHON_UNUSED void *context) {
-    PyObject* tmp;
-    if (!value) {
-        value = Py_None;
-    } else if (value != Py_None && !PyTuple_Check(value)) {
-        PyErr_SetString(PyExc_TypeError,
-                        "__defaults__ must be set to a tuple object");
-        return -1;
-    }
-    Py_INCREF(value);
-    tmp = op->defaults_tuple;
-    op->defaults_tuple = value;
-    Py_XDECREF(tmp);
-    return 0;
-}
-static PyObject *
-__Pyx_CyFunction_get_defaults(__pyx_CyFunctionObject *op, CYTHON_UNUSED void *context) {
-    PyObject* result = op->defaults_tuple;
-    if (unlikely(!result)) {
-        if (op->defaults_getter) {
-            if (__Pyx_CyFunction_init_defaults(op) < 0) return NULL;
-            result = op->defaults_tuple;
-        } else {
-            result = Py_None;
-        }
-    }
-    Py_INCREF(result);
-    return result;
-}
-static int
-__Pyx_CyFunction_set_kwdefaults(__pyx_CyFunctionObject *op, PyObject* value, CYTHON_UNUSED void *context) {
-    PyObject* tmp;
-    if (!value) {
-        value = Py_None;
-    } else if (value != Py_None && !PyDict_Check(value)) {
-        PyErr_SetString(PyExc_TypeError,
-                        "__kwdefaults__ must be set to a dict object");
-        return -1;
-    }
-    Py_INCREF(value);
-    tmp = op->defaults_kwdict;
-    op->defaults_kwdict = value;
-    Py_XDECREF(tmp);
-    return 0;
-}
-static PyObject *
-__Pyx_CyFunction_get_kwdefaults(__pyx_CyFunctionObject *op, CYTHON_UNUSED void *context) {
-    PyObject* result = op->defaults_kwdict;
-    if (unlikely(!result)) {
-        if (op->defaults_getter) {
-            if (__Pyx_CyFunction_init_defaults(op) < 0) return NULL;
-            result = op->defaults_kwdict;
-        } else {
-            result = Py_None;
-        }
-    }
-    Py_INCREF(result);
-    return result;
-}
-static int
-__Pyx_CyFunction_set_annotations(__pyx_CyFunctionObject *op, PyObject* value, CYTHON_UNUSED void *context) {
-    PyObject* tmp;
-    if (!value || value == Py_None) {
-        value = NULL;
-    } else if (!PyDict_Check(value)) {
-        PyErr_SetString(PyExc_TypeError,
-                        "__annotations__ must be set to a dict object");
-        return -1;
-    }
-    Py_XINCREF(value);
-    tmp = op->func_annotations;
-    op->func_annotations = value;
-    Py_XDECREF(tmp);
-    return 0;
-}
-static PyObject *
-__Pyx_CyFunction_get_annotations(__pyx_CyFunctionObject *op, CYTHON_UNUSED void *context) {
-    PyObject* result = op->func_annotations;
-    if (unlikely(!result)) {
-        result = PyDict_New();
-        if (unlikely(!result)) return NULL;
-        op->func_annotations = result;
-    }
-    Py_INCREF(result);
-    return result;
-}
-static PyGetSetDef __pyx_CyFunction_getsets[] = {
-    {(char *) "func_doc", (getter)__Pyx_CyFunction_get_doc, (setter)__Pyx_CyFunction_set_doc, 0, 0},
-    {(char *) "__doc__",  (getter)__Pyx_CyFunction_get_doc, (setter)__Pyx_CyFunction_set_doc, 0, 0},
-    {(char *) "func_name", (getter)__Pyx_CyFunction_get_name, (setter)__Pyx_CyFunction_set_name, 0, 0},
-    {(char *) "__name__", (getter)__Pyx_CyFunction_get_name, (setter)__Pyx_CyFunction_set_name, 0, 0},
-    {(char *) "__qualname__", (getter)__Pyx_CyFunction_get_qualname, (setter)__Pyx_CyFunction_set_qualname, 0, 0},
-    {(char *) "__self__", (getter)__Pyx_CyFunction_get_self, 0, 0, 0},
-    {(char *) "func_dict", (getter)__Pyx_CyFunction_get_dict, (setter)__Pyx_CyFunction_set_dict, 0, 0},
-    {(char *) "__dict__", (getter)__Pyx_CyFunction_get_dict, (setter)__Pyx_CyFunction_set_dict, 0, 0},
-    {(char *) "func_globals", (getter)__Pyx_CyFunction_get_globals, 0, 0, 0},
-    {(char *) "__globals__", (getter)__Pyx_CyFunction_get_globals, 0, 0, 0},
-    {(char *) "func_closure", (getter)__Pyx_CyFunction_get_closure, 0, 0, 0},
-    {(char *) "__closure__", (getter)__Pyx_CyFunction_get_closure, 0, 0, 0},
-    {(char *) "func_code", (getter)__Pyx_CyFunction_get_code, 0, 0, 0},
-    {(char *) "__code__", (getter)__Pyx_CyFunction_get_code, 0, 0, 0},
-    {(char *) "func_defaults", (getter)__Pyx_CyFunction_get_defaults, (setter)__Pyx_CyFunction_set_defaults, 0, 0},
-    {(char *) "__defaults__", (getter)__Pyx_CyFunction_get_defaults, (setter)__Pyx_CyFunction_set_defaults, 0, 0},
-    {(char *) "__kwdefaults__", (getter)__Pyx_CyFunction_get_kwdefaults, (setter)__Pyx_CyFunction_set_kwdefaults, 0, 0},
-    {(char *) "__annotations__", (getter)__Pyx_CyFunction_get_annotations, (setter)__Pyx_CyFunction_set_annotations, 0, 0},
-    {0, 0, 0, 0, 0}
-};
-static PyMemberDef __pyx_CyFunction_members[] = {
-    {(char *) "__module__", T_OBJECT, offsetof(PyCFunctionObject, m_module), PY_WRITE_RESTRICTED, 0},
-    {0, 0, 0,  0, 0}
-};
-static PyObject *
-__Pyx_CyFunction_reduce(__pyx_CyFunctionObject *m, CYTHON_UNUSED PyObject *args)
-{
-#if PY_MAJOR_VERSION >= 3
-    return PyUnicode_FromString(m->func.m_ml->ml_name);
-#else
-    return PyString_FromString(m->func.m_ml->ml_name);
-#endif
-}
-static PyMethodDef __pyx_CyFunction_methods[] = {
-    {"__reduce__", (PyCFunction)__Pyx_CyFunction_reduce, METH_VARARGS, 0},
-    {0, 0, 0, 0}
-};
-#if PY_VERSION_HEX < 0x030500A0
-#define __Pyx_CyFunction_weakreflist(cyfunc) ((cyfunc)->func_weakreflist)
-#else
-#define __Pyx_CyFunction_weakreflist(cyfunc) ((cyfunc)->func.m_weakreflist)
-#endif
-static PyObject *__Pyx_CyFunction_Init(__pyx_CyFunctionObject *op, PyMethodDef *ml, int flags, PyObject* qualname,
-                                       PyObject *closure, PyObject *module, PyObject* globals, PyObject* code) {
-    if (unlikely(op == NULL))
-        return NULL;
-    op->flags = flags;
-    __Pyx_CyFunction_weakreflist(op) = NULL;
-    op->func.m_ml = ml;
-    op->func.m_self = (PyObject *) op;
-    Py_XINCREF(closure);
-    op->func_closure = closure;
-    Py_XINCREF(module);
-    op->func.m_module = module;
-    op->func_dict = NULL;
-    op->func_name = NULL;
-    Py_INCREF(qualname);
-    op->func_qualname = qualname;
-    op->func_doc = NULL;
-    op->func_classobj = NULL;
-    op->func_globals = globals;
-    Py_INCREF(op->func_globals);
-    Py_XINCREF(code);
-    op->func_code = code;
-    op->defaults_pyobjects = 0;
-    op->defaults_size = 0;
-    op->defaults = NULL;
-    op->defaults_tuple = NULL;
-    op->defaults_kwdict = NULL;
-    op->defaults_getter = NULL;
-    op->func_annotations = NULL;
-    return (PyObject *) op;
-}
-static int
-__Pyx_CyFunction_clear(__pyx_CyFunctionObject *m)
-{
-    Py_CLEAR(m->func_closure);
-    Py_CLEAR(m->func.m_module);
-    Py_CLEAR(m->func_dict);
-    Py_CLEAR(m->func_name);
-    Py_CLEAR(m->func_qualname);
-    Py_CLEAR(m->func_doc);
-    Py_CLEAR(m->func_globals);
-    Py_CLEAR(m->func_code);
-    Py_CLEAR(m->func_classobj);
-    Py_CLEAR(m->defaults_tuple);
-    Py_CLEAR(m->defaults_kwdict);
-    Py_CLEAR(m->func_annotations);
-    if (m->defaults) {
-        PyObject **pydefaults = __Pyx_CyFunction_Defaults(PyObject *, m);
-        int i;
-        for (i = 0; i < m->defaults_pyobjects; i++)
-            Py_XDECREF(pydefaults[i]);
-        PyObject_Free(m->defaults);
-        m->defaults = NULL;
-    }
-    return 0;
-}
-static void __Pyx__CyFunction_dealloc(__pyx_CyFunctionObject *m)
-{
-    if (__Pyx_CyFunction_weakreflist(m) != NULL)
-        PyObject_ClearWeakRefs((PyObject *) m);
-    __Pyx_CyFunction_clear(m);
-    PyObject_GC_Del(m);
-}
-static void __Pyx_CyFunction_dealloc(__pyx_CyFunctionObject *m)
-{
-    PyObject_GC_UnTrack(m);
-    __Pyx__CyFunction_dealloc(m);
-}
-static int __Pyx_CyFunction_traverse(__pyx_CyFunctionObject *m, visitproc visit, void *arg)
-{
-    Py_VISIT(m->func_closure);
-    Py_VISIT(m->func.m_module);
-    Py_VISIT(m->func_dict);
-    Py_VISIT(m->func_name);
-    Py_VISIT(m->func_qualname);
-    Py_VISIT(m->func_doc);
-    Py_VISIT(m->func_globals);
-    Py_VISIT(m->func_code);
-    Py_VISIT(m->func_classobj);
-    Py_VISIT(m->defaults_tuple);
-    Py_VISIT(m->defaults_kwdict);
-    if (m->defaults) {
-        PyObject **pydefaults = __Pyx_CyFunction_Defaults(PyObject *, m);
-        int i;
-        for (i = 0; i < m->defaults_pyobjects; i++)
-            Py_VISIT(pydefaults[i]);
-    }
-    return 0;
-}
-static PyObject *__Pyx_CyFunction_descr_get(PyObject *func, PyObject *obj, PyObject *type)
-{
-#if PY_MAJOR_VERSION < 3
-    __pyx_CyFunctionObject *m = (__pyx_CyFunctionObject *) func;
-    if (m->flags & __Pyx_CYFUNCTION_STATICMETHOD) {
-        Py_INCREF(func);
-        return func;
-    }
-    if (m->flags & __Pyx_CYFUNCTION_CLASSMETHOD) {
-        if (type == NULL)
-            type = (PyObject *)(Py_TYPE(obj));
-        return __Pyx_PyMethod_New(func, type, (PyObject *)(Py_TYPE(type)));
-    }
-    if (obj == Py_None)
-        obj = NULL;
-#endif
-    return __Pyx_PyMethod_New(func, obj, type);
-}
-static PyObject*
-__Pyx_CyFunction_repr(__pyx_CyFunctionObject *op)
-{
-#if PY_MAJOR_VERSION >= 3
-    return PyUnicode_FromFormat("<cyfunction %U at %p>",
-                                op->func_qualname, (void *)op);
-#else
-    return PyString_FromFormat("<cyfunction %s at %p>",
-                               PyString_AsString(op->func_qualname), (void *)op);
-#endif
-}
-static PyObject * __Pyx_CyFunction_CallMethod(PyObject *func, PyObject *self, PyObject *arg, PyObject *kw) {
-    PyCFunctionObject* f = (PyCFunctionObject*)func;
-    PyCFunction meth = f->m_ml->ml_meth;
-    Py_ssize_t size;
-    switch (f->m_ml->ml_flags & (METH_VARARGS | METH_KEYWORDS | METH_NOARGS | METH_O)) {
-    case METH_VARARGS:
-        if (likely(kw == NULL || PyDict_Size(kw) == 0))
-            return (*meth)(self, arg);
-        break;
-    case METH_VARARGS | METH_KEYWORDS:
-        return (*(PyCFunctionWithKeywords)(void*)meth)(self, arg, kw);
-    case METH_NOARGS:
-        if (likely(kw == NULL || PyDict_Size(kw) == 0)) {
-            size = PyTuple_GET_SIZE(arg);
-            if (likely(size == 0))
-                return (*meth)(self, NULL);
-            PyErr_Format(PyExc_TypeError,
-                "%.200s() takes no arguments (%" CYTHON_FORMAT_SSIZE_T "d given)",
-                f->m_ml->ml_name, size);
-            return NULL;
-        }
-        break;
-    case METH_O:
-        if (likely(kw == NULL || PyDict_Size(kw) == 0)) {
-            size = PyTuple_GET_SIZE(arg);
-            if (likely(size == 1)) {
-                PyObject *result, *arg0;
-                #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-                arg0 = PyTuple_GET_ITEM(arg, 0);
-                #else
-                arg0 = PySequence_ITEM(arg, 0); if (unlikely(!arg0)) return NULL;
-                #endif
-                result = (*meth)(self, arg0);
-                #if !(CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS)
-                Py_DECREF(arg0);
-                #endif
-                return result;
-            }
-            PyErr_Format(PyExc_TypeError,
-                "%.200s() takes exactly one argument (%" CYTHON_FORMAT_SSIZE_T "d given)",
-                f->m_ml->ml_name, size);
-            return NULL;
-        }
-        break;
-    default:
-        PyErr_SetString(PyExc_SystemError, "Bad call flags in "
-                        "__Pyx_CyFunction_Call. METH_OLDARGS is no "
-                        "longer supported!");
-        return NULL;
-    }
-    PyErr_Format(PyExc_TypeError, "%.200s() takes no keyword arguments",
-                 f->m_ml->ml_name);
-    return NULL;
-}
-static CYTHON_INLINE PyObject *__Pyx_CyFunction_Call(PyObject *func, PyObject *arg, PyObject *kw) {
-    return __Pyx_CyFunction_CallMethod(func, ((PyCFunctionObject*)func)->m_self, arg, kw);
-}
-static PyObject *__Pyx_CyFunction_CallAsMethod(PyObject *func, PyObject *args, PyObject *kw) {
-    PyObject *result;
-    __pyx_CyFunctionObject *cyfunc = (__pyx_CyFunctionObject *) func;
-    if ((cyfunc->flags & __Pyx_CYFUNCTION_CCLASS) && !(cyfunc->flags & __Pyx_CYFUNCTION_STATICMETHOD)) {
-        Py_ssize_t argc;
-        PyObject *new_args;
-        PyObject *self;
-        argc = PyTuple_GET_SIZE(args);
-        new_args = PyTuple_GetSlice(args, 1, argc);
-        if (unlikely(!new_args))
-            return NULL;
-        self = PyTuple_GetItem(args, 0);
-        if (unlikely(!self)) {
-            Py_DECREF(new_args);
-            return NULL;
-        }
-        result = __Pyx_CyFunction_CallMethod(func, self, new_args, kw);
-        Py_DECREF(new_args);
-    } else {
-        result = __Pyx_CyFunction_Call(func, args, kw);
-    }
-    return result;
-}
-static PyTypeObject __pyx_CyFunctionType_type = {
-    PyVarObject_HEAD_INIT(0, 0)
-    "cython_function_or_method",
-    sizeof(__pyx_CyFunctionObject),
-    0,
-    (destructor) __Pyx_CyFunction_dealloc,
-    0,
-    0,
-    0,
-#if PY_MAJOR_VERSION < 3
-    0,
-#else
-    0,
-#endif
-    (reprfunc) __Pyx_CyFunction_repr,
-    0,
-    0,
-    0,
-    0,
-    __Pyx_CyFunction_CallAsMethod,
-    0,
-    0,
-    0,
-    0,
-    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,
-    0,
-    (traverseproc) __Pyx_CyFunction_traverse,
-    (inquiry) __Pyx_CyFunction_clear,
-    0,
-#if PY_VERSION_HEX < 0x030500A0
-    offsetof(__pyx_CyFunctionObject, func_weakreflist),
-#else
-    offsetof(PyCFunctionObject, m_weakreflist),
-#endif
-    0,
-    0,
-    __pyx_CyFunction_methods,
-    __pyx_CyFunction_members,
-    __pyx_CyFunction_getsets,
-    0,
-    0,
-    __Pyx_CyFunction_descr_get,
-    0,
-    offsetof(__pyx_CyFunctionObject, func_dict),
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-#if PY_VERSION_HEX >= 0x030400a1
-    0,
-#endif
-#if PY_VERSION_HEX >= 0x030800b1
-    0,
-#endif
-#if PY_VERSION_HEX >= 0x030800b4 && PY_VERSION_HEX < 0x03090000
-    0,
-#endif
-};
-static int __pyx_CyFunction_init(void) {
-    __pyx_CyFunctionType = __Pyx_FetchCommonType(&__pyx_CyFunctionType_type);
-    if (unlikely(__pyx_CyFunctionType == NULL)) {
-        return -1;
-    }
-    return 0;
-}
-static CYTHON_INLINE void *__Pyx_CyFunction_InitDefaults(PyObject *func, size_t size, int pyobjects) {
-    __pyx_CyFunctionObject *m = (__pyx_CyFunctionObject *) func;
-    m->defaults = PyObject_Malloc(size);
-    if (unlikely(!m->defaults))
-        return PyErr_NoMemory();
-    memset(m->defaults, 0, size);
-    m->defaults_pyobjects = pyobjects;
-    m->defaults_size = size;
-    return m->defaults;
-}
-static CYTHON_INLINE void __Pyx_CyFunction_SetDefaultsTuple(PyObject *func, PyObject *tuple) {
-    __pyx_CyFunctionObject *m = (__pyx_CyFunctionObject *) func;
-    m->defaults_tuple = tuple;
-    Py_INCREF(tuple);
-}
-static CYTHON_INLINE void __Pyx_CyFunction_SetDefaultsKwDict(PyObject *func, PyObject *dict) {
-    __pyx_CyFunctionObject *m = (__pyx_CyFunctionObject *) func;
-    m->defaults_kwdict = dict;
-    Py_INCREF(dict);
-}
-static CYTHON_INLINE void __Pyx_CyFunction_SetAnnotationsDict(PyObject *func, PyObject *dict) {
-    __pyx_CyFunctionObject *m = (__pyx_CyFunctionObject *) func;
-    m->func_annotations = dict;
-    Py_INCREF(dict);
-}
-
-/* CythonFunction */
-  static PyObject *__Pyx_CyFunction_New(PyMethodDef *ml, int flags, PyObject* qualname,
-                                      PyObject *closure, PyObject *module, PyObject* globals, PyObject* code) {
-    PyObject *op = __Pyx_CyFunction_Init(
-        PyObject_GC_New(__pyx_CyFunctionObject, __pyx_CyFunctionType),
-        ml, flags, qualname, closure, module, globals, code
-    );
-    if (likely(op)) {
-        PyObject_GC_Track(op);
-    }
-    return op;
 }
 
 /* GetTopmostException */
@@ -8436,46 +7400,6 @@ static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject 
 bad:
     Py_XDECREF(owned_instance);
     return;
-}
-#endif
-
-/* PyObject_GenericGetAttrNoDict */
-  #if CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP && PY_VERSION_HEX < 0x03070000
-static PyObject *__Pyx_RaiseGenericGetAttributeError(PyTypeObject *tp, PyObject *attr_name) {
-    PyErr_Format(PyExc_AttributeError,
-#if PY_MAJOR_VERSION >= 3
-                 "'%.50s' object has no attribute '%U'",
-                 tp->tp_name, attr_name);
-#else
-                 "'%.50s' object has no attribute '%.400s'",
-                 tp->tp_name, PyString_AS_STRING(attr_name));
-#endif
-    return NULL;
-}
-static CYTHON_INLINE PyObject* __Pyx_PyObject_GenericGetAttrNoDict(PyObject* obj, PyObject* attr_name) {
-    PyObject *descr;
-    PyTypeObject *tp = Py_TYPE(obj);
-    if (unlikely(!PyString_Check(attr_name))) {
-        return PyObject_GenericGetAttr(obj, attr_name);
-    }
-    assert(!tp->tp_dictoffset);
-    descr = _PyType_Lookup(tp, attr_name);
-    if (unlikely(!descr)) {
-        return __Pyx_RaiseGenericGetAttributeError(tp, attr_name);
-    }
-    Py_INCREF(descr);
-    #if PY_MAJOR_VERSION < 3
-    if (likely(PyType_HasFeature(Py_TYPE(descr), Py_TPFLAGS_HAVE_CLASS)))
-    #endif
-    {
-        descrgetfunc f = Py_TYPE(descr)->tp_descr_get;
-        if (unlikely(f)) {
-            PyObject *res = f(descr, obj, (PyObject *)tp);
-            Py_DECREF(descr);
-            return res;
-        }
-    }
-    return descr;
 }
 #endif
 

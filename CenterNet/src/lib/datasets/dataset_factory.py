@@ -12,6 +12,7 @@ from .dataset.pascal import PascalVOC
 from .dataset.kitti import KITTI
 from .dataset.coco_hp import COCOHP
 from .dataset.thermal_pose import THERMALPOSE
+from .dataset.chen_wang import CHENWANG
 
 
 dataset_factory = {
@@ -19,7 +20,8 @@ dataset_factory = {
   'pascal': PascalVOC,
   'kitti': KITTI,
   'coco_hp': COCOHP,
-  'thermal_pose':THERMALPOSE
+  'thermal_pose':THERMALPOSE,
+  'chen_wang':CHENWANG
 }
 
 _sample_factory = {

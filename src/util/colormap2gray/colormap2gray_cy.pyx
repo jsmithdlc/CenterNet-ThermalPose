@@ -77,9 +77,11 @@ def main(opts):
 	cdef list color_to_gray_map_keys = list(color_to_gray_map.keys())
 	for _,img_path in tqdm(enumerate(paths)):
 		output_path = "{}/{}{}".format(opts.output_dir,preamble,img_path.split("/")[-1])
+		#output_path = "{}/general_train{}".format(opts.output_dir,img_path.split("/")[-1])
 		if os.path.exists(output_path):
 			continue
 		color_image = cv2.imread(img_path)
-		color_image = resize(color_image,10)
-		gray_img = np.apply_along_axis(lambda bgr: color_to_gray_map[nearest(color_to_gray_map_keys,bgr)], 2, color_image)
+		#color_image = resize(color_image,50)
+		gray_img = cv2.cvtColor(color_image,cv2.COLOR_BGR2GRAY)
+		#gray_img = np.apply_along_axis(lambda bgr: color_to_gray_map[nearest(color_to_gray_map_keys,bgr)], 2, color_image)
 		cv2.imwrite(output_path,gray_img)
