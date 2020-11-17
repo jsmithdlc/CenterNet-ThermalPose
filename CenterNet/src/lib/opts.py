@@ -231,6 +231,9 @@ class opts(object):
     self.parser.add_argument('--freeze_blocks', type=str, default="",
                              help='freeze specified blocks of backbone network.')
 
+    self.parser.add_argument('--num_joints', type=int, default=17,
+                             help='number of joints for multi-pose detection')
+
 
   def parse(self, args=''):
     if args == '':
@@ -329,11 +332,11 @@ class opts(object):
     elif opt.task == 'multi_pose':
       # assert opt.dataset in ['coco_hp']
       opt.flip_idx = dataset.flip_idx
-      opt.heads = {'hm': opt.num_classes, 'wh': 2, 'hps': 34}
+      opt.heads = {'hm': opt.num_classes, 'wh': 2, 'hps': opt.num_joints*2}
       if opt.reg_offset:
         opt.heads.update({'reg': 2})
       if opt.hm_hp:
-        opt.heads.update({'hm_hp': 17})
+        opt.heads.update({'hm_hp': opt.num_joints})
       if opt.reg_hp_offset:
         opt.heads.update({'hp_offset': 2})
     else:

@@ -25,11 +25,13 @@ class MultiPoseDetector(BaseDetector):
   def __init__(self, opt):
     super(MultiPoseDetector, self).__init__(opt)
     self.flip_idx = opt.flip_idx
+    self.opt = opt
 
   def process(self, images, return_time=False):
     with torch.no_grad():
       torch.cuda.synchronize()
       output = self.model(images)[-1]
+      #print(len(output['hps'][0]))
       output['hm'] = output['hm'].sigmoid_()
       if self.opt.hm_hp and not self.opt.mse_loss:
         output['hm_hp'] = output['hm_hp'].sigmoid_()
@@ -63,9 +65,9 @@ class MultiPoseDetector(BaseDetector):
     dets = dets.detach().cpu().numpy().reshape(1, -1, dets.shape[2])
     dets = multi_pose_post_process(
       dets.copy(), [meta['c']], [meta['s']],
-      meta['out_height'], meta['out_width'])
+      meta['out_height'], meta['out_width'],self.opt.num_joints)
     for j in range(1, self.num_classes + 1):
-      dets[0][j] = np.array(dets[0][j], dtype=np.float32).reshape(-1, 39)
+      dets[0][j] = np.array(dets[0][j], dtype=np.float32).reshape(-1, self.opt.num_joints*2+5)
       # import pdb; pdb.set_trace()
       dets[0][j][:, :4] /= scale
       dets[0][j][:, 5:] /= scale

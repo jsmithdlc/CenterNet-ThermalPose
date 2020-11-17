@@ -2,16 +2,20 @@ import json
 import os
 import glob
 
-def order_anns_by_id(json_file,last_img):
+def order_anns_by_id(json_file):
 	anns = json_file['annotations']
-	num_imgs = len(json_file['images'])
-	ordered_anns = {index:[] for index in range(last_img+num_imgs)}
+	#num_imgs = len(json_file['images'])
+	ordered_anns = {"ignore":[]}
 	for ann in anns:
-		ordered_anns[ann['image_id']].append(ann)
+		if ann['image_id'] in ordered_anns.keys():
+			ordered_anns[ann['image_id']].append(ann)
+		else:
+			ordered_anns[ann['image_id']] = [ann]
 	return ordered_anns
 	
 def renameImages(json_file,bbox_file,set_name,last_img,last_ann):
-	ordered_anns = order_anns_by_id(json_file,last_img)
+	ordered_anns = order_anns_by_id(json_file)
+	#json_annotations = json_file["annotations"]
 	new_anns = []
 	new_imgs = []
 	ann_counter = 0
@@ -22,12 +26,14 @@ def renameImages(json_file,bbox_file,set_name,last_img,last_ann):
 		new_filename = "{}_train{}".format(set_name,old_filename)
 		new_id = last_img+img_counter
 		bboxes = bbox_file[new_filename]
+
+		if old_id not in list(ordered_anns.keys()):
+			print("Image:{} does not have annotations".format(old_filename))
+			continue
+
 		anns_this_img = ordered_anns[old_id]
 		this_anns = []
 		success = True
-		if anns_this_img == []:
-			continue
-
 
 		for ann in anns_this_img:
 			this_bboxes = bboxes["bboxes"].copy()
@@ -93,6 +99,17 @@ def deleteNeck(json_file):
 	json_file['categories'][0]["keypoints"] = json_file['categories'][0]["keypoints"][:-1]
 	return json_file
 
+def completeNeck(json_file):
+	anns = json_file['annotations']
+	new_anns = []
+	for ann in anns:
+		if len(ann['keypoints']) == 51:
+			ann['keypoints'].extend([0,0,0])
+		new_anns.append(ann)
+	json_file['annotations'] = new_anns
+	json_file['categories'][0]["keypoints"] = json_file['categories'][0]["keypoints"][:-1]
+	return json_file
+
 def main(data_path, which_set,delete_neck=False):
 	json_paths = glob.glob(data_path+"*.json")
 	if(len(json_paths)==0):
@@ -121,15 +138,22 @@ def main(data_path, which_set,delete_neck=False):
 		new_json, last_img_id, last_ann_id = renameImages(file,bbox_file,set_name,last_img_id,last_ann_id)
 		if delete_neck:
 			new_json = deleteNeck(new_json)
+		else:
+			new_json = completeNeck(new_json)
+
 		new_anns["images"].extend(new_json["images"])
 		new_anns["annotations"].extend(new_json["annotations"])
 	new_anns["info"] = file["info"]
 	new_anns["licenses"] = file["licenses"]
 	new_anns["categories"] = file["categories"]
+	print(type(file["categories"][0]["id"]))
+	if not delete_neck:
+		new_anns["categories"][0]["skeleton"] = [[16,14],[14,12],[17,15],[15,13],[12,13],[18,12],[18,13],[6,18],[7,18],
+		            						[6,8],[7,9],[8,10],[9,11],[1,18],[2,3],[1,2],[1,3],[2,4],[3,5]]
 	with open(output_dir + "chenWang_{}.json".format(which_set), "w") as fp:
 			json.dump(new_anns, fp)
 
 
 if __name__ == '__main__':
-	main(data_path="../../../ThemalPost-Data/annotations/train/",which_set="train",delete_neck=True)
+	main(data_path="../../../ThemalPost-Data/annotations/train/",which_set="train",delete_neck=False)
 

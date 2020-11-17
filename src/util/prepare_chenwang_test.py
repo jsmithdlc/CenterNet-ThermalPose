@@ -121,11 +121,21 @@ class ChenWang:
 	def deleteNeck(self):
 		new_anns = []
 		for ann in self.annotations:
-			if ann['keypoints'][-1] > 0:
-				ann['num_keypoints'] -= 1
-			ann['keypoints'] = ann['keypoints'][:-3]
+			if len(ann['keypoints']) == 54:
+				if ann['keypoints'][-1] > 0:
+					ann['num_keypoints'] -= 1
+				ann['keypoints'] = ann['keypoints'][:-3]
 			new_anns.append(ann)
 		self.annotations = new_anns
+
+	def completeNeck(self):
+		new_anns = []
+		for ann in self.annotations:
+			if len(ann['keypoints']) == 51:
+				ann['keypoints'].extend([0,0,0])
+			new_anns.append(ann)
+		self.annotations = new_anns
+
 
 	def add_categories(self, delete_neck=False):
 			keypoints = ["nose","left_eye","right_eye","left_ear","right_ear","left_shoulder",
@@ -133,7 +143,7 @@ class ChenWang:
 						 "left_hip","right_hip","left_knee","right_knee","left_ankle","right_ankle"]
 			if not delete_neck:
 				keypoints += ["Neck"]
-				skeleteon = [[16,14],[14,12],[17,15],[15,13],[12,13],[18,12],[18,13],[6,18],[7,18],
+				skeleton = [[16,14],[14,12],[17,15],[15,13],[12,13],[18,12],[18,13],[6,18],[7,18],
 		            		[6,8],[7,9],[8,10],[9,11],[1,18],[2,3],[1,2],[1,3],[2,4],[3,5]]
 			else:
 				skeleton = [[16,14],[14,12],[17,15],[15,13],[12,13],[6,12],[7,13],[6,7],
@@ -152,7 +162,10 @@ class ChenWang:
 		self.clean_anns()
 		if delete_neck:
 			self.deleteNeck()
+		else:
+			self.completeNeck()
 		self.add_categories(delete_neck)
+		print(self.categories)
 
 		output_ann_file = {"info":self.info,
 						   "licencese":self.licenses,
@@ -166,5 +179,5 @@ class ChenWang:
 if __name__ == '__main__':
 	chenWang = ChenWang("/home/javier/Universidad/memoria/repositorios/ThemalPost-Data/annotations/val/")
 	output_dir = "/home/javier/Universidad/memoria/repositorios/ThemalPost-Data/annotations/val/joined/"
-	chenWang.transform2coco(output_dir=output_dir,delete_neck=True)
+	chenWang.transform2coco(output_dir=output_dir,delete_neck=False)
 

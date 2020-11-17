@@ -13,6 +13,7 @@ from .dataset.kitti import KITTI
 from .dataset.coco_hp import COCOHP
 from .dataset.thermal_pose import THERMALPOSE
 from .dataset.chen_wang import CHENWANG
+from .dataset.chen_wang_neck import CHENWANGNECK
 
 
 dataset_factory = {
@@ -21,7 +22,8 @@ dataset_factory = {
   'kitti': KITTI,
   'coco_hp': COCOHP,
   'thermal_pose':THERMALPOSE,
-  'chen_wang':CHENWANG
+  'chen_wang':CHENWANG,
+  'chen_wang_neck':CHENWANGNECK
 }
 
 _sample_factory = {

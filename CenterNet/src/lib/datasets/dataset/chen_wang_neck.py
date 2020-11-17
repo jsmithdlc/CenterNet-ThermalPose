@@ -11,9 +11,9 @@ import os
 
 import torch.utils.data as data
 
-class CHENWANG(data.Dataset):
+class CHENWANGNECK(data.Dataset):
   num_classes = 1
-  num_joints = 17
+  num_joints = 18
   default_resolution = [512,512]
   mean = np.array([0.40789654, 0.44719302, 0.47026115],
                    dtype=np.float32).reshape(1, 1, 3)
@@ -22,24 +22,24 @@ class CHENWANG(data.Dataset):
   flip_idx = [[1, 2], [3, 4], [5, 6], [7, 8], [9, 10], 
               [11, 12], [13, 14], [15, 16]]
   def __init__(self, opt, split):
-    super(CHENWANG, self).__init__()
+    super(CHENWANGNECK, self).__init__()
     self.edges = [[0, 1], [0, 2], [1, 3], [2, 4], 
-                  [4, 6], [3, 5], [5, 6], 
+                  [0, 17], [17, 5], [17, 6], 
                   [5, 7], [7, 9], [6, 8], [8, 10], 
-                  [6, 12], [5, 11], [11, 12], 
+                  [17, 12], [17, 11], [11, 12], 
                   [12, 14], [14, 16], [11, 13], [13, 15]]
     
     self.acc_idxs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
-    self.data_dir = os.path.join(opt.data_dir, 'chen_wang')
+    self.data_dir = os.path.join(opt.data_dir, 'chen_wang_neck')
     self.img_dir = os.path.join(self.data_dir, '{}'.format(split))
     if split == 'test':
       self.annot_path = os.path.join(
           self.data_dir, 'annotations', 
-          'image_info_test-dev2017.json').format(split)
+          'chenWang_test.json')
     elif split == 'val':
       self.annot_path = os.path.join(
           self.data_dir, 'annotations', 
-          'chenWang_test.json').format(split)
+          'chenWang_test.json')
     else:
       self.annot_path = os.path.join(
         self.data_dir, 'annotations', 
@@ -87,8 +87,8 @@ class CHENWANG(data.Dataset):
           score = dets[4]
           bbox_out  = list(map(self._to_float, bbox))
           keypoints = np.concatenate([
-            np.array(dets[5:39], dtype=np.float32).reshape(-1, 2), 
-            np.ones((17, 1), dtype=np.float32)], axis=1).reshape(51).tolist()
+            np.array(dets[5:self.num_joints*2+5], dtype=np.float32).reshape(-1, 2), 
+            np.ones((self.num_joints, 1), dtype=np.float32)], axis=1).reshape(self.num_joints*3).tolist()
           keypoints  = list(map(self._to_float, keypoints))
 
           detection = {
@@ -116,6 +116,7 @@ class CHENWANG(data.Dataset):
     self.save_results(results, save_dir)
     coco_dets = self.coco.loadRes('{}/results.json'.format(save_dir))
     coco_eval = COCOeval(self.coco, coco_dets, "keypoints")
+    coco_eval.params.kpt_oks_sigmas = np.array([.26, .25, .25, .35, .35, .79, .79, .72, .72, .62,.62, 1.07, 1.07, .87, .87, .89, .89, 0.79])/10.0
     coco_eval.evaluate()
     coco_eval.accumulate()
     coco_eval.summarize()
