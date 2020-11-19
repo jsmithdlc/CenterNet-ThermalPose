@@ -1,4 +1,6 @@
 import cv2
+from multiprocessing import Pool
+from multiprocessing import cpu_count
 import os
 import glob
 import matplotlib.pyplot as plt
@@ -55,6 +57,20 @@ cdef np.ndarray make_cmap():
 		index += 1
 	return cmap
 
+def multiprocess_imgs(dict payload):
+	color_to_gray_map = payload["color_to_gray_map"]
+	color_to_gray_map_keys = payload["color_to_gray_map_keys"]
+	preamble = payload["preamble"]
+	output_dir = payload["output_dir"]
+	for _,image_path in enumerate(tqdm(payload["input_paths"])):
+		output_path = "{}/{}{}".format(output_dir,preamble,image_path.split("/")[-1])
+		if not os.path.exists(output_path):
+			color_image = cv2.imread(image_path)
+			color_image = resize(color_image,20)
+			gray_img = np.apply_along_axis(lambda bgr: color_to_gray_map[nearest(color_to_gray_map_keys,bgr)], 2, color_image)
+			cv2.imwrite(output_path,gray_img)
+
+"""
 def main(opts):
 	cdef np.ndarray[np.uint8_t,ndim=1] gray_values = np.arange(256,dtype=np.uint8)
 	cdef np.ndarray[np.uint8_t,ndim=3] cmap
@@ -81,7 +97,53 @@ def main(opts):
 		if os.path.exists(output_path):
 			continue
 		color_image = cv2.imread(img_path)
-		#color_image = resize(color_image,50)
-		gray_img = cv2.cvtColor(color_image,cv2.COLOR_BGR2GRAY)
-		#gray_img = np.apply_along_axis(lambda bgr: color_to_gray_map[nearest(color_to_gray_map_keys,bgr)], 2, color_image)
+		color_image = resize(color_image,20)
+		#gray_img = cv2.cvtColor(color_image,cv2.COLOR_BGR2GRAY)
+		gray_img = np.apply_along_axis(lambda bgr: color_to_gray_map[nearest(color_to_gray_map_keys,bgr)], 2, color_image)
 		cv2.imwrite(output_path,gray_img)
+"""
+
+def chunk(l, n):
+	# loop over the list in n-sized chunks
+	for i in range(0, len(l), n):
+		# yield the current n-sized chunk to the calling function
+		yield l[i: i + n]
+
+def main(opts):
+	cdef np.ndarray[np.uint8_t,ndim=1] gray_values = np.arange(256,dtype=np.uint8)
+	cdef np.ndarray[np.uint8_t,ndim=3] cmap
+	cmap = make_cmap()
+	color_values = map(tuple,cv2.applyColorMap(gray_values,cmap).reshape(256,3))
+	cdef dict color_to_gray_map = dict(zip(color_values, gray_values))
+	cdef list paths = glob.glob("{}/*{}".format(opts.data_path,opts.img_format))
+	if(not os.path.isdir(opts.output_dir)):
+		os.mkdir(opts.output_dir)
+
+	cdef str preamble
+	preamble = ""
+	if(opts.include_set_name):
+		preamble = opts.data_path.split("/")[-1] + "_"
+
+
+	procs = 4
+	procIDs = list(range(0, procs))
+	allImagePaths =paths
+	numImagesPerProc = len(allImagePaths) / float(procs)
+	numImagesPerProc = int(np.ceil(numImagesPerProc))
+	chunkedPaths = list(chunk(allImagePaths, numImagesPerProc))
+	payloads = []
+	for (i, imagePaths) in enumerate(chunkedPaths):
+		data = {
+			"id": i,
+			"input_paths": imagePaths,
+			"preamble":preamble,
+			"color_to_gray_map":color_to_gray_map,
+			"color_to_gray_map_keys":list(color_to_gray_map.keys()),
+			"output_dir":opts.output_dir
+		}
+		payloads.append(data)
+
+	pool = Pool(processes=procs)
+	pool.map(multiprocess_imgs, payloads)
+	pool.close()
+	pool.join()
