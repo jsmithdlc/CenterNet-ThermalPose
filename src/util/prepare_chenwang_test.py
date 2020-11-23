@@ -3,7 +3,7 @@ import json
 from collections import OrderedDict
 from datetime import date
 import argparse
-
+import numpy as np
 
 class ChenWang:
 	def __init__(self, input_dir):
@@ -70,7 +70,7 @@ class ChenWang:
 					img_count += 1
 				ann_count += 1
 
-	def clean_anns(self):
+	def clean_anns(self,use_maskRCNN):
 		keypoints = ["nose","left_eye","right_eye","left_ear","right_ear","left_shoulder",
 					 "right_shoulder","left_elbow","right_elbow","left_wrist","right_wrist",
 					 "left_hip","right_hip","left_knee","right_knee","left_ankle","right_ankle","neck"]
@@ -86,7 +86,7 @@ class ChenWang:
 			for i, label in enumerate(kpts_labels):
 				xy = kpts_xy[i] + [1]
 				kpts_dict[label] = xy
-			bbox_id, bbox = self.find_bbox(ann["bbox"],kpts_dict)
+			bbox_id, bbox = self.find_bbox(ann["bbox"],kpts_dict, use_maskRCNN)
 			if len(bbox)==0:
 				banned_imgs.append(img_id)
 				del self.images[img_id]
@@ -96,26 +96,38 @@ class ChenWang:
 				new_kpts.extend(kpts_dict[kpt_label])
 			ann["keypoints"] = new_kpts		
 			ann["bbox"]	= bbox
-			ann["area"] = ann["area"][bbox_id]
+			if use_maskRCNN:
+				ann["area"] = ann["area"][bbox_id]
+			else:
+				ann["area"] = int(ann["bbox"][2]*ann["bbox"][3])
 			del ann["keypoints_labels"]
 			new_annotations.append(ann)
 		self.annotations = new_annotations
 	
 
-	def find_bbox(self, bboxes,kpts_dict):
-		kpt_ref = kpts_dict["neck"]
-		if kpt_ref[-1] == 0:
-			kpt_ref = kpts_dict["left_hip"]
-		xy_kpt = [int(kpt_ref[:-1][0]),int(kpt_ref[:-1][1])]
-		for bbox_id, bbox in enumerate(bboxes):
-			bbox_x1 = int(bbox[1])
-			bbox_y1 = int(bbox[0])
-			bbox_x2 = int(bbox[3])
-			bbox_y2 = int(bbox[2])
-			if (xy_kpt[0] >= bbox_x1) and (xy_kpt[0] <= bbox_x2) and \
-			   (xy_kpt[1] >= bbox_y1) and (xy_kpt[1] <= bbox_y2):
-			   return bbox_id,[bbox_x1,bbox_y1,bbox_x2-bbox_x1,bbox_y2-bbox_y1] 
-		return 0,[]
+	def find_bbox(self, bboxes,kpts_dict, use_maskRCNN):
+		if (use_maskRCNN):
+			kpt_ref = kpts_dict["neck"]
+			if kpt_ref[-1] == 0:
+				kpt_ref = kpts_dict["left_hip"]
+			xy_kpt = [int(kpt_ref[:-1][0]),int(kpt_ref[:-1][1])]
+			for bbox_id, bbox in enumerate(bboxes):
+				bbox_x1 = int(bbox[1])
+				bbox_y1 = int(bbox[0])
+				bbox_x2 = int(bbox[3])
+				bbox_y2 = int(bbox[2])
+				if (xy_kpt[0] >= bbox_x1) and (xy_kpt[0] <= bbox_x2) and \
+				   (xy_kpt[1] >= bbox_y1) and (xy_kpt[1] <= bbox_y2):
+				   return bbox_id,[bbox_x1,bbox_y1,bbox_x2-bbox_x1,bbox_y2-bbox_y1] 
+			return 0,[]
+		else:
+			kpts = np.array(list(kpts_dict.values()))
+			kpts = kpts[~np.all(kpts == 0, axis=1)]
+			min_x, min_y,_ = np.min(kpts,axis=0)
+			max_x, max_y,_ = np.max(kpts,axis=0)
+			width = max_x - min_x
+			height = max_y - min_y
+			return 0,[int(min_x),int(min_y),int(width),int(height)]
 		
 
 	def deleteNeck(self):
@@ -155,11 +167,11 @@ class ChenWang:
 								"skeleton":skeleton}]
 
 
-	def transform2coco(self,output_dir,delete_neck=False):
+	def transform2coco(self,output_dir,delete_neck=False,use_maskRCNN = False):
 		self.add_info()
 		self.add_licenses()
 		self.add_anns()
-		self.clean_anns()
+		self.clean_anns(use_maskRCNN)
 		if delete_neck:
 			self.deleteNeck()
 		else:
@@ -177,7 +189,7 @@ class ChenWang:
 
 
 if __name__ == '__main__':
-	chenWang = ChenWang("/home/javier/Universidad/memoria/repositorios/ThemalPost-Data/annotations/val/")
-	output_dir = "/home/javier/Universidad/memoria/repositorios/ThemalPost-Data/annotations/val/joined/"
-	chenWang.transform2coco(output_dir=output_dir,delete_neck=False)
+	chenWang = ChenWang("/home/javier/Javier/Universidad/memoria/repositorios/ThemalPost-Data/annotations/val/")
+	output_dir = "/home/javier/Javier/Universidad/memoria/repositorios/ThemalPost-Data/annotations/val/joined/"
+	chenWang.transform2coco(output_dir=output_dir,delete_neck=True)
 

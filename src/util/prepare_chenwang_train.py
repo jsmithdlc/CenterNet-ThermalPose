@@ -1,7 +1,7 @@
 import json
 import os
 import glob
-
+import numpy as np
 def order_anns_by_id(json_file):
 	anns = json_file['annotations']
 	#num_imgs = len(json_file['images'])
@@ -13,7 +13,7 @@ def order_anns_by_id(json_file):
 			ordered_anns[ann['image_id']] = [ann]
 	return ordered_anns
 	
-def renameImages(json_file,bbox_file,set_name,last_img,last_ann):
+def renameImages(json_file,bbox_file,set_name,last_img,last_ann,use_maskRCNN):
 	ordered_anns = order_anns_by_id(json_file)
 	#json_annotations = json_file["annotations"]
 	new_anns = []
@@ -38,16 +38,18 @@ def renameImages(json_file,bbox_file,set_name,last_img,last_ann):
 		for ann in anns_this_img:
 			this_bboxes = bboxes["bboxes"].copy()
 			this_kpts = ann['keypoints'].copy()
-			area_id,bbox = find_bbox(this_bboxes,this_kpts)
+			area_id,bbox = find_bbox(this_bboxes,this_kpts,use_maskRCNN)
 			if bbox == []:
 				success = False
 				ann_counter -= len(this_anns)
 				break
-			area = bboxes["areas"][area_id]
+			ann['bbox'] = bbox
 			ann['image_id'] = new_id
 			ann['id'] = last_ann + ann_counter
-			ann['bbox'] = bbox
-			ann['area'] = area
+			if use_maskRCNN:
+				ann['area'] = bboxes["areas"][area_id]
+			else:
+				ann['area'] = ann['bbox'][2]*ann['bbox'][3]
 			this_anns.append(ann)
 			ann_counter += 1
 
@@ -66,24 +68,34 @@ def renameImages(json_file,bbox_file,set_name,last_img,last_ann):
 	return json_file, last_img, last_ann
 
 
-def find_bbox(bboxes,kpts):
-	start_kpt = -3
-	kpt_ref = kpts[start_kpt:]
-	while kpt_ref[-1] == 0:
-		kpt_ref = kpts[start_kpt:start_kpt+3]
-		start_kpt -= 3
-		if start_kpt <= 0:
-			return 0, []
-	xy_kpt = kpt_ref[:-1]
-	for bbox_id, bbox in enumerate(bboxes):
-		bbox_x1 = int(bbox[1])
-		bbox_y1 = int(bbox[0])
-		bbox_x2 = int(bbox[3])
-		bbox_y2 = int(bbox[2])
-		if (xy_kpt[0] >= bbox_x1) and (xy_kpt[0] <= bbox_x2) and \
-		   (xy_kpt[1] >= bbox_y1) and (xy_kpt[1] <= bbox_y2):
-		   return bbox_id,[bbox_x1,bbox_y1,bbox_x2-bbox_x1,bbox_y2-bbox_y1] 
-	return 0,[]
+def find_bbox(bboxes,kpts,use_maskRCNN):
+	if (use_maskRCNN):
+		start_kpt = -3
+		kpt_ref = kpts[start_kpt:]
+		while kpt_ref[-1] == 0:
+			kpt_ref = kpts[start_kpt:start_kpt+3]
+			start_kpt -= 3
+			if start_kpt <= 0:
+				return 0, []
+		xy_kpt = kpt_ref[:-1]
+		for bbox_id, bbox in enumerate(bboxes):
+			bbox_x1 = int(bbox[1])
+			bbox_y1 = int(bbox[0])
+			bbox_x2 = int(bbox[3])
+			bbox_y2 = int(bbox[2])
+			if (xy_kpt[0] >= bbox_x1) and (xy_kpt[0] <= bbox_x2) and \
+			   (xy_kpt[1] >= bbox_y1) and (xy_kpt[1] <= bbox_y2):
+			   return bbox_id,[bbox_x1,bbox_y1,bbox_x2-bbox_x1,bbox_y2-bbox_y1] 
+		return 0,[]
+	else:
+		kpts_x = np.ma.masked_equal(kpts[0::3],0).compressed()
+		kpts_y = np.ma.masked_equal(kpts[1::3],0).compressed()
+		min_x,max_x = np.min(kpts_x),np.max(kpts_x)
+		min_y,max_y = np.min(kpts_y),np.max(kpts_y)
+		width = max_x - min_x
+		height = max_y - min_y
+		return 0,[int(min_x),int(min_y),int(width),int(height)]
+
 
 
 def deleteNeck(json_file):
@@ -110,7 +122,7 @@ def completeNeck(json_file):
 	json_file['categories'][0]["keypoints"] = json_file['categories'][0]["keypoints"][:-1]
 	return json_file
 
-def main(data_path, which_set,delete_neck=False):
+def main(data_path, which_set,delete_neck=False,use_maskRCNN = False):
 	json_paths = glob.glob(data_path+"*.json")
 	if(len(json_paths)==0):
 		print("No json files found at specified directory")
@@ -135,7 +147,7 @@ def main(data_path, which_set,delete_neck=False):
 	new_anns = {"images":[],"annotations":[]}
 	for set_name, file in zip(set_names,json_files):
 		bbox_file = bbox_jsons[set_name]
-		new_json, last_img_id, last_ann_id = renameImages(file,bbox_file,set_name,last_img_id,last_ann_id)
+		new_json, last_img_id, last_ann_id = renameImages(file,bbox_file,set_name,last_img_id,last_ann_id,use_maskRCNN)
 		if delete_neck:
 			new_json = deleteNeck(new_json)
 		else:
@@ -146,7 +158,6 @@ def main(data_path, which_set,delete_neck=False):
 	new_anns["info"] = file["info"]
 	new_anns["licenses"] = file["licenses"]
 	new_anns["categories"] = file["categories"]
-	print(type(file["categories"][0]["id"]))
 	if not delete_neck:
 		new_anns["categories"][0]["skeleton"] = [[16,14],[14,12],[17,15],[15,13],[12,13],[18,12],[18,13],[6,18],[7,18],
 		            						[6,8],[7,9],[8,10],[9,11],[1,18],[2,3],[1,2],[1,3],[2,4],[3,5]]
@@ -155,5 +166,6 @@ def main(data_path, which_set,delete_neck=False):
 
 
 if __name__ == '__main__':
-	main(data_path="../../../ThemalPost-Data/annotations/train/",which_set="train",delete_neck=False)
+	main(data_path="../../../ThemalPost-Data/annotations/train/",which_set="train",\
+		delete_neck=False,use_maskRCNN=False)
 
