@@ -10,7 +10,7 @@ coco=COCO(annFile)
 
 catIds = coco.getCatIds(catNms=['person']);
 imgIds = coco.getImgIds(catIds=catIds);
-imgIds = coco.getImgIds(imgIds = [3000])
+imgIds = coco.getImgIds(imgIds = [2000])
 img = coco.loadImgs(imgIds[np.random.randint(0,len(imgIds))])[0]
 
 #I = io.imread("/home/javier/Universidad/memoria/repositorios/ThermalPose/CenterNet/data/chen_wang/test/"+img['file_name'])

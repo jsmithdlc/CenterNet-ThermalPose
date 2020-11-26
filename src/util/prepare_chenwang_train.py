@@ -167,5 +167,5 @@ def main(data_path, which_set,delete_neck=False,use_maskRCNN = False):
 
 if __name__ == '__main__':
 	main(data_path="../../../ThemalPost-Data/annotations/train/",which_set="train",\
-		delete_neck=False,use_maskRCNN=False)
+		delete_neck=True,use_maskRCNN=False)
 

@@ -189,7 +189,7 @@ class ChenWang:
 
 
 if __name__ == '__main__':
-	chenWang = ChenWang("/home/javier/Javier/Universidad/memoria/repositorios/ThemalPost-Data/annotations/val/")
-	output_dir = "/home/javier/Javier/Universidad/memoria/repositorios/ThemalPost-Data/annotations/val/joined/"
-	chenWang.transform2coco(output_dir=output_dir,delete_neck=True)
+	chenWang = ChenWang("../../../ThemalPost-Data/annotations/val/")
+	output_dir = "../../../ThemalPost-Data/annotations/val/joined/"
+	chenWang.transform2coco(output_dir=output_dir,delete_neck=True,use_maskRCNN = True)
 
