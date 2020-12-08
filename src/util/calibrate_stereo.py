@@ -39,14 +39,16 @@ cv2.destroyAllWindows()
 
 ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, imgpoints, gray.shape[::-1],None,None)
 
-img = cv2.imread('/home/javier/Javier/Universidad/memoria/repositorios/ThermalPose/src/util/calibration_images/webcam_12_2_9.jpg')
-h,  w = img.shape[:2]
-newcameramtx, roi=cv2.getOptimalNewCameraMatrix(mtx,dist,(w,h),1,(w,h))
+input_images = glob.glob("../../stereo_captures/webcam/*.jpg")
+for img_path in input_images:
+	img = cv2.imread(img_path)
+	h,  w = img.shape[:2]
+	newcameramtx, roi=cv2.getOptimalNewCameraMatrix(mtx,dist,(w,h),1,(w,h))
 
-# undistort
-dst = cv2.undistort(img, mtx, dist, None, newcameramtx)
+	# undistort
+	dst = cv2.undistort(img, mtx, dist, None, newcameramtx)
 
-# crop the image
-x,y,w,h = roi
-dst = dst[y:y+h, x:x+w]
-cv2.imwrite('./calibresult.png',dst)
+	# crop the image
+	x,y,w,h = roi
+	dst = dst[y:y+h, x:x+w]
+	cv2.imwrite('../../stereo_captures/webcam_undistorted/'+img_path.split("/")[-1],dst)
