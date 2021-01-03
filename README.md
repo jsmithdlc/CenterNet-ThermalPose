@@ -1,4 +1,4 @@
-# ThermalPose
+# Thermal Pose Estimation Based on CenterNet
 Pose Estimation on Thermal Images, based on center point detection by CenterNet
 
 ## Project Structure
