@@ -150,9 +150,11 @@ def get_opt_file(opt_path):
 
 if __name__=='__main__':
 	scores, opts = gather_results()
+	plot_normal(scores,"hrnet_32_gray_lr1e-3_mb12_bs8")
 
 	#plot_batch_test(scores,'AP','dla','3x','gray',opts=opts)
 	#plot_batch_test(scores,'AR','dla','3x','gray',opts=opts)
+
 
 
 	scores = scores.set_index('epoch',append=True)
@@ -162,11 +164,7 @@ if __name__=='__main__':
 	top_scores = top_scores[['AP','best_AP_epoch','AR','best_AR_epoch']]
 	top_scores.to_csv('../results/top_scores.csv')
 
-	top_ones = scores[['arch','domain','AP','AR']].groupby(['arch','domain']).max().loc[[('dla','color'),('dla','thermal'),('hg','thermal')]]
-	top_ones = top_ones.reset_index()
-	top_ones['experiment'] = top_ones.apply(lambda row: row['arch']+"_" + row['domain'],axis=1)
 	fig,ax = plt.subplots(1,1)
-	print(top_ones)
 	"""
 	plot_score(scores,'AR','dla','1x')
 	plot_score(scores,'AP','dla','1x')
