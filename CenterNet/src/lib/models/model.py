@@ -20,8 +20,8 @@ _model_factory = {
   'res': get_pose_net, # default Resnet with deconv
   'dlav0': get_dlav0, # default DLAup
   'dla': get_dla_dcn,
-  'hrnet_w32': get_hrpose_net,
-  'hrnet_w48': get_hrpose_net,
+  'hrnet32': get_hrpose_net,
+  'hrnet48': get_hrpose_net,
   'resdcn': get_pose_net_dcn,
   'hourglass': get_large_hourglass_net,
 }
