@@ -38,7 +38,8 @@ def renameImages(json_file,bbox_file,set_name,last_img,last_ann,use_maskRCNN):
 		for ann in anns_this_img:
 			this_bboxes = bboxes["bboxes"].copy()
 			this_kpts = ann['keypoints'].copy()
-			area_id,bbox = find_bbox(this_bboxes,this_kpts,use_maskRCNN)
+			area_id,bbox = find_bbox(this_bboxes,this_kpts,use_maskRCNN,\
+				img_shape=(json_file['images'][index]['width'],json_file['images'][index]['height']))
 			if bbox == []:
 				success = False
 				ann_counter -= len(this_anns)
@@ -68,7 +69,7 @@ def renameImages(json_file,bbox_file,set_name,last_img,last_ann,use_maskRCNN):
 	return json_file, last_img, last_ann
 
 
-def find_bbox(bboxes,kpts,use_maskRCNN):
+def find_bbox(bboxes,kpts,use_maskRCNN,img_shape=(0,0)):
 	if (use_maskRCNN):
 		start_kpt = -3
 		kpt_ref = kpts[start_kpt:]
@@ -94,7 +95,11 @@ def find_bbox(bboxes,kpts,use_maskRCNN):
 		min_y,max_y = np.min(kpts_y),np.max(kpts_y)
 		width = max_x - min_x
 		height = max_y - min_y
-		return 0,[int(min_x),int(min_y),int(width),int(height)]
+		top_left_x = max(0,min_x - width*0.075)
+		top_left_y = max(0,min_y - height*0.075)
+		bbox_width = min(img_shape[0],width*1.15)
+		bbox_height = min(img_shape[1],height*1.15)
+		return 0,[top_left_x,top_left_y,bbox_width,bbox_height]
 
 
 

@@ -86,7 +86,8 @@ class ChenWang:
 			for i, label in enumerate(kpts_labels):
 				xy = kpts_xy[i] + [1]
 				kpts_dict[label] = xy
-			bbox_id, bbox = self.find_bbox(ann["bbox"],kpts_dict, use_maskRCNN)
+			bbox_id, bbox = self.find_bbox(ann["bbox"],kpts_dict, use_maskRCNN,
+							img_shape=(self.images[img_id]['width'],self.images[img_id]['height']))
 			if len(bbox)==0:
 				banned_imgs.append(img_id)
 				del self.images[img_id]
@@ -105,7 +106,7 @@ class ChenWang:
 		self.annotations = new_annotations
 	
 
-	def find_bbox(self, bboxes,kpts_dict, use_maskRCNN):
+	def find_bbox(self, bboxes,kpts_dict, use_maskRCNN,img_shape=(0,0)):
 		if (use_maskRCNN):
 			kpt_ref = kpts_dict["neck"]
 			if kpt_ref[-1] == 0:
@@ -127,7 +128,12 @@ class ChenWang:
 			max_x, max_y,_ = np.max(kpts,axis=0)
 			width = max_x - min_x
 			height = max_y - min_y
-			return 0,[int(min_x),int(min_y),int(width),int(height)]
+			top_left_x = max(0,min_x - width*0.075)
+			top_left_y = max(0,min_y - height*0.075)
+			bbox_width = min(img_shape[0],width*1.15)
+			bbox_height = min(img_shape[1],height*1.15)
+			return 0,[top_left_x,top_left_y,bbox_width,bbox_height]
+
 		
 
 	def deleteNeck(self):
@@ -189,7 +195,7 @@ class ChenWang:
 
 
 if __name__ == '__main__':
-	chenWang = ChenWang("../../../ThemalPost-Data/annotations/val/")
-	output_dir = "../../../ThemalPost-Data/annotations/val/joined/"
-	chenWang.transform2coco(output_dir=output_dir,delete_neck=True,use_maskRCNN = True)
+	chenWang = ChenWang("/home/javier/Javier/Universidad/memoria/repositorios/ThemalPost-Data/annotations/val/")
+	output_dir = "/home/javier/Javier/Universidad/memoria/repositorios/ThemalPost-Data/annotations/val/joined/"
+	chenWang.transform2coco(output_dir=output_dir,delete_neck=True)
 
