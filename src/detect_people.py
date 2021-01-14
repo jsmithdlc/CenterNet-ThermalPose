@@ -1,9 +1,11 @@
 import sys
+# Set paths for CenterNet files
 CENTERNET_LIB_PATH = "../CenterNet/src/lib/"
 CENTERNET_SRC_PATH = "../CenterNet/src/"
 sys.path.insert(0, CENTERNET_LIB_PATH)
 sys.path.insert(1, CENTERNET_SRC_PATH)
 
+# Import libraries
 import os
 import cv2
 import numpy as np
@@ -11,71 +13,89 @@ from opts import opts
 from detectors.detector_factory import detector_factory
 import argparse
 
+# Supported image extensions
 image_ext = ['jpg', 'jpeg', 'png', 'webp']
+# Supported video extensions
 video_ext = ['mp4', 'mov', 'avi', 'mkv']
+# Name of time stats prints
 time_stats = ['tot', 'load', 'pre', 'net', 'dec', 'post', 'merge']
 
-color_list = np.array(
-        [
-            1.000, 1.000, 1.000]
-    ).astype(np.float32)
-color_list = color_list.reshape((-1, 3)) * 255
-colors = [(color_list[_]).astype(np.uint8) \
-            for _ in range(len(color_list))]
-colors = np.array(colors, dtype=np.uint8).reshape(len(colors), 1, 1, 3)
-theme = "normal"
+# Colors for located keypoints
 colors_hp = [(255, 0, 255), (255, 0, 0), (0, 0, 255), 
 			(255, 0, 0), (0, 0, 255), (255, 0, 0), (0, 0, 255),
 			(255, 0, 0), (0, 0, 255), (255, 0, 0), (0, 0, 255),
 			(255, 0, 0), (0, 0, 255), (255, 0, 0), (0, 0, 255),
 			(255, 0, 0), (0, 0, 255)]
 
+# Colors for skeleton
 ec = [(255, 0, 0), (0, 0, 255), (255, 0, 0), (0, 0, 255), 
 		(255, 0, 0), (0, 0, 255), (255, 0, 255),
 		(255, 0, 0), (255, 0, 0), (0, 0, 255), (0, 0, 255),
 		(255, 0, 0), (0, 0, 255), (255, 0, 255),
 		(255, 0, 0), (255, 0, 0), (0, 0, 255), (0, 0, 255)]
 
+# Links between keypoints, for skeleton construction
 edges = [[0, 1], [0, 2], [1, 3], [2, 4], 
 		[3, 5], [4, 6], [5, 6], 
 		[5, 7], [7, 9], [6, 8], [8, 10], 
 		[5, 11], [6, 12], [11, 12], 
 		[11, 13], [13, 15], [12, 14], [14, 16]]
 
-MODEL_PATH = "../CenterNet/models/multi_pose_dla_3x_gray_384_0frz.pth"
-TASK = 'multi_pose' # or 'multi_pose' for human pose estimation
-opt = opts().init('{} --load_model {}'.format(TASK, MODEL_PATH).split(' '))
-detector = detector_factory[opt.task](opt)
-detector.pause = False
-
-def add_coco_bbox(img,bbox, cat, conf=1, show_txt=True, img_id='default'):
+def add_coco_bbox(img,bbox, conf=1, show_txt=True):
+	"""
+	draws bounding box over img
+	-----
+	Params
+	-----
+	img: np.array
+		input image
+	bbox: list
+		bounding box coordinates
+	conf: float
+		confidence in detection
+	show_txt: bool
+		show text with confidence score and category over bbox
+	------
+	Returns
+		Image with bounding box drawn over
+	"""
 	bbox = np.array(bbox, dtype=np.int32)
-	# cat = (int(cat) + 1) % 80
-	cat = int(cat)
-	# print('cat', cat, self.names[cat])
-	#c = colors[cat][0][0].tolist()
-	c = [0,255,0]
-	if theme == 'white':
-		c = (255 - np.array(c)).tolist()
-	txt = '{}{:.1f}'.format("person", conf)
+	c = [0,255,0] # bbox color
+	txt = '{}{:.1f}'.format("person", conf) # text to display
 	font = cv2.FONT_HERSHEY_SIMPLEX
 	cat_size = cv2.getTextSize(txt, font, 0.5, 2)[0]
+	# Creates rectangle over image
 	cv2.rectangle(
 		img, (bbox[0], bbox[1]), (bbox[2], bbox[3]), c, 2)
+	# Draws text over image, if requested
 	if show_txt:
 	  cv2.rectangle(img,
 	                (bbox[0], bbox[1] - cat_size[1] - 2),
 	                (bbox[0] + cat_size[0], bbox[1] - 2), c, -1)
 	  cv2.putText(img, txt, (bbox[0], bbox[1] - 2), 
 	              font, 0.5, (0, 0, 0), thickness=1, lineType=cv2.LINE_AA)
-
 	return img
 
-def add_coco_hp(img,points, img_id='default'): 
+def add_coco_hp(img,points): 
+	"""
+	draws detected keypoints and skeleton over input image
+	-----
+	Params
+	-----
+	img: np.array
+		input image
+	points: list
+		keypoint coordinates
+	------
+	Returns
+		Image with keypoints and skeletons drawn over
+	"""
 	points = np.array(points, dtype=np.int32).reshape(17, 2)
+	# Draws each keypoint over image
 	for j in range(17):
 		cv2.circle(img,
 				(points[j, 0], points[j, 1]), 3, colors_hp[j], -1)
+	# Draws lines joining keypoints, to form skeletons
 	for j, e in enumerate(edges):
 		if points[e].min() > 0:
 			cv2.line(img, (points[e[0], 0], points[e[0], 1]),
@@ -83,35 +103,88 @@ def add_coco_hp(img,points, img_id='default'):
 			lineType=cv2.LINE_AA)
 	return img
 
-
-def draw_detection(img,results):
+def draw_detection(img,results,min_confidence):
+	"""
+	draws detected bounding box and keypoints over image
+	-----
+	Params
+	-----
+	img: np.array
+		input image
+	results: dict
+		dictionary with keypoint and bounding box detections
+	min_confidence: float
+		minimum confidence in detection for displaying
+	------
+	Returns
+		Image with keypoints and bounding boxes drawn over
+	"""
 	for bbox in results[1]:
-		if bbox[4] > opt.vis_thresh:
-			ret_img = add_coco_bbox(img,bbox[:4], 0, bbox[4], img_id='multi_pose')
-			ret_img = add_coco_hp(ret_img,bbox[5:39], img_id='multi_pose')
+		# Verifies if detection is over threshold
+		if bbox[4] > min_confidence:
+			ret_img = add_coco_bbox(img,bbox[:4], bbox[4]) # draws bbox
+			ret_img = add_coco_hp(ret_img,bbox[5:39])         # draws kpts
+		# If detection is not over confidence threshold, returns original image
 		else:
 			ret_img = img
 	return ret_img
 
 def main(args):
+	# Selects appropiate paths according to backbone selection
+	if args.arch == 'dla':
+		MODEL_PATH = "../CenterNet/models/multi_pose_dla_3x_gray_384_0frz.pth"
+		arch_name = 'dla_34'
+	elif args.arch == 'hourglass':
+		MODEL_PATH = "../CenterNet/models/multi_pose_hg_3x_gray_0frz.pth"
+		arch_name = args.arch
+	elif args.arch =='hrnet':
+		MODEL_PATH = "../CenterNet/models/multi_pose_hrnet_3x_gray_finetune"
+		arch_name = 'hrnet32'
+	# Initializes centernet options
+	opt = opts().init('{} --load_model {} --arch {}'.format('multi_pose', MODEL_PATH,arch_name).split(' '))
+	# Creates detector
+	detector = detector_factory[opt.task](opt)
+	detector.pause = False
+
+
 	if args.demo == 'webcam' or \
 		args.demo[args.demo.rfind('.') + 1:].lower() in video_ext:
+		# Initializes video capture for frame retrieval
 		cam = cv2.VideoCapture(0 if args.demo == 'webcam' else args.demo)
+		# In case output directory is specified, creates video writer for saving each frame into output video
+		if args.output_dir != '':
+			output_video_path = '{}{}_{}.mp4'.format(args.output_dir,args.demo.split("/")[-1].split(".")[0],args.arch)
+			_, sample_img = cam.read()
+			out = cv2.VideoWriter(output_video_path,cv2.VideoWriter_fourcc('M','J','P','G'), 30, 
+				  (sample_img.shape[0],sample_img.shape[1]))
 		while True:
-			_, img = cam.read()
-			cv2.imshow('entrada', img)
-			ret = detector.run(img)
-			ret_img = draw_detection(img,ret["results"])
-			cv2.imshow('deteccion',ret_img)
+			_, img = cam.read()        # reads frame from webcam or video
+			cv2.imshow('entrada', img) # shows input image
+			ret = detector.run(img)    # runs detection over input image
+			ret_img = draw_detection(img,ret["results"],args.min_confidence) # draws detection over input image
+			# If user wants, fps can be shown over detection image
+			if args.show_fps:
+				cv2.putText(ret_img,'fps: {:.2f}'.format((1/ret['tot'])),(0,30), cv2.FONT_HERSHEY_SIMPLEX , 1, (255, 255, 255), 2, cv2.LINE_AA)
+			cv2.imshow('deteccion',ret_img) # shows image with detections
+			# Writes frame with detection over output video
+			if args.output_dir != '':
+				out.write(ret_img)
+			# Prints time stats
 			time_str = ''
 			for stat in time_stats:
 				time_str = time_str + '{} {:.3f}s |'.format(stat, ret[stat])
 			print(time_str)
+			# Option for exiting program
 			if cv2.waitKey(0 if args.pause else 1) == 27:
+				cam.release()
+				out.release()
 				import sys
 				sys.exit(0)
+		cam.release()
+		out.release()
 
 	else:
+		# If demo is image or directory with images, retrieves path for each one of them
 		if os.path.isdir(args.demo):
 			image_names = []
 			ls = os.listdir(args.demo)
@@ -124,19 +197,25 @@ def main(args):
 			image_names = [args.demo]
 
 		for (image_name) in image_names:
+			# Reads image
 			img = cv2.imread(image_name)
-			cv2.imshow('entrada', img)
-			ret = detector.run(img)
-			ret_img = draw_detection(img,ret["results"])
-			cv2.imshow('deteccion',ret_img)
+			cv2.imshow('entrada', img) # shows input image
+			ret = detector.run(img)    # runs detection over image
+			ret_img = draw_detection(img,ret["results"],args.min_confidence) # draws detections over image
+			cv2.imshow('deteccion',ret_img) # shows image with detections
+			# saves output image with detections, if requested
+			if args.output_dir != '':
+				output_img_path = '{}{}_{}.png'.format(args.output_dir,image_name.split("/")[-1].split(".")[0],args.arch)
+				cv2.imwrite(output_img_path,ret_img)
+			# Option for exiting program
 			if cv2.waitKey(0 if args.pause else 1) == 27:
 				import sys
 				sys.exit(0)
+			# Prints time stats
 			time_str = ''
 			for stat in time_stats:
 				time_str = time_str + '{} {:.3f}s |'.format(stat, ret[stat])
 			print(time_str)
-			cv2.imshow('entrada', img)
 
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
@@ -144,5 +223,14 @@ if __name__ == '__main__':
                          help='path to image/ image folders/ video. ')
 	parser.add_argument('--pause', action='store_true', 
                          help='whether to pause between detections')
+	parser.add_argument('--arch', default='dla', 
+                             help='model architecture. Currently tested'
+                                  'dla | hourglass | hrnet')
+	parser.add_argument('--min_confidence', type=float, default=0.3,
+                             help='minimum confidence for visualization')
+	parser.add_argument('--show_fps', action='store_true',
+                             help='show fps of detection in visualization')
+	parser.add_argument('--output_dir',type=str,default='',
+							 help='output directory for detections')
 	args = parser.parse_args()
 	main(args)

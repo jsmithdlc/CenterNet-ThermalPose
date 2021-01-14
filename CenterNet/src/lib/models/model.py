@@ -32,10 +32,11 @@ def create_model(arch, heads, head_conv):
   get_model = _model_factory[arch]
 
   if("hrnet" in arch):
+    cfg_dir = "./cfg_files" if os.path.isdir("./cfg_files") else '../cfg_files'
     if("w48" in arch):
-      update_config(cfg, "../cfg_files/hrnet_w48_512.yaml")
+      update_config(cfg, "{}/hrnet_w48_512.yaml".format(cfg_dir))
     else:
-      update_config(cfg, "../cfg_files/hrnet_w32_512.yaml")
+      update_config(cfg, "{}/hrnet_w32_512.yaml".format(cfg_dir))
     model = get_model(num_layers=num_layers, cfg = cfg, heads=heads, head_conv=head_conv)
   else:
     model = get_model(num_layers=num_layers, heads=heads, head_conv=head_conv)
