@@ -9,6 +9,7 @@ sys.path.insert(1, CENTERNET_SRC_PATH)
 import os
 import cv2
 import numpy as np
+import pandas as pd
 from opts import opts
 from detectors.detector_factory import detector_factory
 import argparse
@@ -129,6 +130,46 @@ def draw_detection(img,results,min_confidence):
 			ret_img = img
 	return ret_img
 
+def org_detections(results,min_confidence):
+	"""
+	returns detection results as an structured dataframe
+	-----
+	Params
+	-----
+	results: dict
+		dictionary with keypoint and bounding box detections
+	min_confidence: float
+		minimum confidence in detection for displaying
+	------
+	Returns
+		Dataframe with bounding box coordinates, score and keypoint locations
+	"""
+	columns = ["topleft_bbox","botright_bbox","score","nose","left_eye","right_eye","left_ear","right_ear","left_shoulder",
+			   "right_shoulder","left_elbow","right_elbow","left_wrist","right_wrist","left_hip","right_hip","left_knee",
+			   "right_knee","left_ankle","right_ankle"]
+	df = pd.DataFrame(columns=columns)
+	det_idx = 0
+	for bbox in results[1]:
+		# Only saves detections over threshold confidence
+		if bbox[4] > min_confidence:
+			# Boundix box coordinates
+			topleft_bbox = [(bbox[0],bbox[1])]
+			botright_bbox = [(bbox[2],bbox[3])]
+			# Detection score
+			score = [bbox[4]]
+			# Keypoints coordinates
+			x_kpts = bbox[5:39:2]
+			y_kpts = bbox[6:39:2]
+			xy_kpts = list(zip(x_kpts,y_kpts))
+			det = topleft_bbox + botright_bbox + score + xy_kpts
+			# Appends detection info to dataframe
+			df.loc[det_idx] = det
+			det_idx += 1
+	return df
+
+
+
+
 def main(args):
 	# Selects appropiate paths according to backbone selection
 	if args.arch == 'dla':
@@ -152,23 +193,30 @@ def main(args):
 		# Initializes video capture for frame retrieval
 		cam = cv2.VideoCapture(0 if args.demo == 'webcam' else args.demo)
 		# In case output directory is specified, creates video writer for saving each frame into output video
-		if args.output_dir != '':
+		if args.output_dir != '' and args.save_img:
 			output_video_path = '{}{}_{}.mp4'.format(args.output_dir,args.demo.split("/")[-1].split(".")[0],args.arch)
 			_, sample_img = cam.read()
 			out = cv2.VideoWriter(output_video_path,cv2.VideoWriter_fourcc('M','J','P','G'), 30, 
 				  (sample_img.shape[0],sample_img.shape[1]))
+		frame_idx = 0
 		while True:
 			_, img = cam.read()        # reads frame from webcam or video
-			cv2.imshow('entrada', img) # shows input image
+			frame_idx += 1
 			ret = detector.run(img)    # runs detection over input image
-			ret_img = draw_detection(img,ret["results"],args.min_confidence) # draws detection over input image
+			ret_img = draw_detection(img.copy(),ret["results"],args.min_confidence) # draws detection over input image
 			# If user wants, fps can be shown over detection image
 			if args.show_fps:
 				cv2.putText(ret_img,'fps: {:.2f}'.format((1/ret['tot'])),(0,30), cv2.FONT_HERSHEY_SIMPLEX , 1, (255, 255, 255), 2, cv2.LINE_AA)
-			cv2.imshow('deteccion',ret_img) # shows image with detections
+			if args.visualize:
+				cv2.imshow('entrada', img) # shows input image
+				cv2.imshow('deteccion',ret_img) # shows image with detections
 			# Writes frame with detection over output video
 			if args.output_dir != '':
-				out.write(ret_img)
+				if args.save_img:
+					out.write(ret_img)
+				if args.save_csv:
+					df_det = org_detections(ret["results"],args.min_confidence)
+					df_det.to_csv("{}{}-{}_{}.csv".format(args.output_dir,args.demo.split("/")[-1].split(".")[0],frame_idx,args.arch))
 			# Prints time stats
 			time_str = ''
 			for stat in time_stats:
@@ -199,14 +247,20 @@ def main(args):
 		for (image_name) in image_names:
 			# Reads image
 			img = cv2.imread(image_name)
-			cv2.imshow('entrada', img) # shows input image
 			ret = detector.run(img)    # runs detection over image
-			ret_img = draw_detection(img,ret["results"],args.min_confidence) # draws detections over image
-			cv2.imshow('deteccion',ret_img) # shows image with detections
+			ret_img = draw_detection(img.copy(),ret["results"],args.min_confidence) # draws detections over image
+			if args.visualize:
+				cv2.imshow('entrada', img) # shows input image
+				cv2.imshow('deteccion',ret_img) # shows image with detections
+
 			# saves output image with detections, if requested
 			if args.output_dir != '':
-				output_img_path = '{}{}_{}.png'.format(args.output_dir,image_name.split("/")[-1].split(".")[0],args.arch)
-				cv2.imwrite(output_img_path,ret_img)
+				if args.save_img:
+					output_img_path = '{}{}_{}.png'.format(args.output_dir,image_name.split("/")[-1].split(".")[0],args.arch)
+					cv2.imwrite(output_img_path,ret_img)
+				if args.save_csv:
+					df_det = org_detections(ret["results"],args.min_confidence)
+					df_det.to_csv("{}{}_{}.csv".format(args.output_dir,image_name.split("/")[-1].split(".")[0],args.arch))
 			# Option for exiting program
 			if cv2.waitKey(0 if args.pause else 1) == 27:
 				import sys
@@ -221,16 +275,31 @@ if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
 	parser.add_argument('--demo', default='', 
                          help='path to image/ image folders/ video. ')
+
 	parser.add_argument('--pause', action='store_true', 
                          help='whether to pause between detections')
+
 	parser.add_argument('--arch', default='dla', 
                              help='model architecture. Currently tested'
                                   'dla | hourglass | hrnet')
+
 	parser.add_argument('--min_confidence', type=float, default=0.3,
                              help='minimum confidence for visualization')
+
 	parser.add_argument('--show_fps', action='store_true',
                              help='show fps of detection in visualization')
+
 	parser.add_argument('--output_dir',type=str,default='',
 							 help='output directory for detections')
+
+	parser.add_argument('--save_img',action='store_true',
+							 help='store images with detections')
+
+	parser.add_argument('--save_csv',action='store_true',
+							 help='save csv files with detected joints and bboxes')
+
+	parser.add_argument('--visualize',type=int, default=1,
+							 help='wheter to visualize outputs')
+
 	args = parser.parse_args()
 	main(args)
