@@ -60,7 +60,10 @@ class PoseThermal:
 			shapes = ann_file["shapes"]
 			for shape in shapes:
 				group_id = str(shape["group_id"])
-				identifier = group_id[0]
+				if shape["shape_type"] == 'rectangle':
+					identifier = group_id
+				else:
+					identifier = group_id[:-1]
 				if(identifier not in new_annotation.keys()):
 					new_annotation[identifier] = {"id":ann_id,
 												  "iscrowd":0,
@@ -91,12 +94,12 @@ class PoseThermal:
 					new_annotation[identifier]['area'] = round(width*height,2)
 				else:
 					kpt_name = shape["label"]
-					if(len(group_id)!=2):
+					if(len(group_id)<2):
 						print(("Keypoint: {}, of person: {}, from Image: {}, does not specify visibility!"
 							  .format(kpt_name,identifier,self.images[img_idx]["file_name"])))
 						visibility = 1
 					else:
-						visibility = int(group_id[1])
+						visibility = int(group_id[-1])
 						if visibility > 2:
 							print(("Visibility of keypoint: {}, of person: {}, from image: {}, does not match standards!"
 							  .format(kpt_name, identifier,self.images[img_idx]["file_name"])))

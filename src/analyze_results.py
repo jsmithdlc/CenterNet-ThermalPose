@@ -159,11 +159,12 @@ if __name__=='__main__':
 
 	scores = scores.set_index('epoch',append=True)
 	AP_top_scores = scores.loc[scores['AP'].groupby(level=0).idxmax()].reset_index(level=[1]).rename(columns={"epoch":"best_AP_epoch"})
+	AR_top_scores = scores.loc[scores['AR'].groupby(level=0).idxmax()].reset_index(level=[1]).rename(columns={"epoch":"best_AR_epoch"})
 	#AR_top_scores = scores.loc[scores['AR'].groupby(level=0).idxmax()][['AR']].reset_index(level=[1]).rename(columns={"epoch":"best_AR_epoch"})
 	#top_scores = pd.merge(AP_top_scores,AR_top_scores,left_index=True,right_index=True)
-	top_scores = AP_top_scores
 	#top_scores = top_scores[['AP','AR','best_AP_epoch']]
-	top_scores.to_csv('../results/top_scores.csv')
+	AP_top_scores.to_csv('../results/top_scores.csv')
+	AR_top_scores.to_csv('../results/top_scores_by_AR.csv')
 
 	fig,ax = plt.subplots(1,1)
 	"""
