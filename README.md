@@ -9,7 +9,7 @@ Pose Estimation on Thermal Images, based on center point detection by CenterNet
 For model finetuning, 600 images were labeled for training and 200 images for testing. Dataset is available at:
 https://drive.google.com/drive/folders/1YV7g563ZGlGO-9wx9G0vt6r7itJE8GDZ?usp=sharing
 
-## Settin Up
+## Setting Up
 Code tested on Ubuntu 16.04, with Python 3.6 and Pytorch 1.1. NVIDIA GPUs required for training and testing. Steps to follow:
 
 1. Create Conda Environment
