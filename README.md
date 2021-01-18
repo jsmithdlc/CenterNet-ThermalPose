@@ -2,7 +2,7 @@
 Pose Estimation on Thermal Images, based on center point detection by CenterNet
 
 
-<p align="center"> <img src='figures/samples/sample1.png' align="center" height="230px"> <img src='figures/samples/sample2.png' align="center" height="230px">  <img src='figures/samples/sample3.png' align="center" height="230px"> <img src='figures/samples/sample4.png' align="center" height="230px"> </p>
+<p align="center"> <img src='figures/samples/sample1.png' align="center" height="230px"> <img src='figures/samples/sample2.png' align="center" height="230px">  <img src='figures/samples/sample3.png' align="center" height="230px"> <img src='figures/samples/sample4.png' align="center" height="230px">                    <img src='figures/samples/sample5.png' align="center" height="230px"> <img src='figures/samples/sample6.png' align="center" height="230px">                    <img src='figures/samples/sample7.png' align="center" height="230px"></p>
 
 
 
