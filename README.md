@@ -1,6 +1,11 @@
 # Thermal Pose Estimation Based on CenterNet
 Pose Estimation on Thermal Images, based on center point detection by CenterNet
 
+
+<p align="center"> <img src='figures/samples/sample1.png' align="center" height="230px"> <img src='figures/samples/sample2.png' align="center" height="230px">  <img src='figures/samples/sample3.png' align="center" height="230px"> <img src='figures/samples/sample4.png' align="center" height="230px"> </p>
+
+
+
 ## Project Structure
 - **CenterNet**: forked repository from https://github.com/xingyizhou/CenterNet.git, with changes for incorporating HRNet backbone, freezing specific layers and backbones, among other.
 - **figures**: includes training plots for different experiments, network graphs for visualizing, output keypoint detection images and captured lab images
@@ -79,7 +84,7 @@ python detect_people.py --demo /path/to/image/or/folder/or/video/
 ~~~
 For using Hourglass or HRNet backbones, include parameter `-- arch` with `hourglass` or `hrnet`. Detection can be paused between images using `--pause`. FPS can be displayed using `--show_fps`. To turn off visualizations during detection, use `--visualize 0`
 
-Images with detections can be saved using `--save_img`. Likewise, csv files with detections can be generated using `--save_csv`. In each case, user must specify output directory using `--output_dir /path/to/output/directory/`. 
+Images with detections can be saved using `--save_img`. Likewise, csv files with detections can be generated using `--save_csv`. In each case, user must specify output directory using `--output_dir /path/to/output/directory/`.
 
 ## Training Models
 Models can be trained using the following sample command:
