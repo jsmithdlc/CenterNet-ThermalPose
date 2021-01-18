@@ -196,7 +196,7 @@ def main(args):
 		if args.output_dir != '' and args.save_img:
 			output_video_path = '{}{}_{}.mp4'.format(args.output_dir,args.demo.split("/")[-1].split(".")[0],args.arch)
 			_, sample_img = cam.read()
-			out = cv2.VideoWriter(output_video_path,cv2.VideoWriter_fourcc('M','J','P','G'), 30, 
+			out = cv2.VideoWriter(output_video_path,cv2.VideoWriter_fourcc('M','J','P','G'), 16, 
 				  (sample_img.shape[0],sample_img.shape[1]))
 		frame_idx = 0
 		while True:
