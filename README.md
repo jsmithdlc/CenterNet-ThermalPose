@@ -69,4 +69,30 @@ python setup.py build_ext --inplace
 
 8. Download pertained models, from  and move them to `CenterNet/models/`
 
-9. Download thermal images dataset, from https://drive.google.com/drive/folders/1YV7g563ZGlGO-9wx9G0vt6r7itJE8GDZ?usp=sharing, and move it to `CenterNet/data/
+9. Download thermal images dataset, from https://drive.google.com/drive/folders/1YV7g563ZGlGO-9wx9G0vt6r7itJE8GDZ?usp=sharing, and move it to `CenterNet/data/`
+
+## Running Demo
+Demo program can be run using the following command, using CenterNet DLA architecture for detection:
+~~~
+cd src
+python detect_people.py --demo /path/to/image/or/folder/or/video/ 
+~~~
+For using Hourglass or HRNet backbones, include parameter `-- arch` with `hourglass` or `hrnet`. Detection can be paused between images using `--pause`. FPS can be displayed using `--show_fps`. To turn off visualizations during detection, use `--visualize 0`
+
+Images with detections can be saved using `--save_img`. Likewise, csv files with detections can be generated using `--save_csv`. In each case, user must specify output directory using `--output_dir /path/to/output/directory/`. 
+
+## Training Models
+Models can be trained using the following sample command:
+~~~
+cd CenterNet/src
+python main.py multi_pose --exp_id <experiment_name> --dataset thermal_pose --master_batch 8 --batch_size 16 --lr 5e-4 --load_model /path/to/pretrained/model/ --gpus 0,1 --num_epochs 50 --lr_step 35,45
+~~~
+To change backbone network, specify `--arch` with `hourglass` or `hrnet32`. Experiments with specific layer freezing can be turned on using `--freeze_blocks` and specifying modules to be freezed. For example, to finetune CenterNet DLA with first convolutional block freezed, run above command including `--freeze_blocks base_layer`. Entire backbone network can be freezed simply using `--freeze_backbone`. More details about different possible options can be found at `CenterNet/src/lib/opts.py`.
+
+
+
+
+
+
+
+
