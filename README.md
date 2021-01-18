@@ -89,7 +89,13 @@ python main.py multi_pose --exp_id <experiment_name> --dataset thermal_pose --ma
 ~~~
 To change backbone network, specify `--arch` with `hourglass` or `hrnet32`. Experiments with specific layer freezing can be turned on using `--freeze_blocks` and specifying modules to be freezed. For example, to finetune CenterNet DLA with first convolutional block freezed, run above command including `--freeze_blocks base_layer`. Entire backbone network can be freezed simply using `--freeze_backbone`. More details about different possible options can be found at `CenterNet/src/lib/opts.py`.
 
-
+## Testing Models
+Models can be tested using the following sample command:
+~~~
+cd CenterNet/src
+python test.py multi_pose --exp_id hg_3x --dataset thermal_pose --keep_res --load_model /path/to/model/
+~~~
+You can specify testing resolution using `--input_res <resolution>`. For example, to test over 384 X 384 images, use `--input_res 384`.
 
 
 
