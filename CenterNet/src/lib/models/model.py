@@ -13,6 +13,7 @@ from .networks.dlav0 import get_pose_net as get_dlav0
 from .networks.pose_dla_dcn import get_pose_net as get_dla_dcn
 from .networks.resnet_dcn import get_pose_net as get_pose_net_dcn
 from .networks.large_hourglass import get_large_hourglass_net
+from .networks.large_hourglass_4 import get_large_hourglass_4_net
 from .networks.pose_higher_hrnet import get_hrpose_net
 from config import cfg, update_config
 
@@ -24,6 +25,7 @@ _model_factory = {
   'hrnet48': get_hrpose_net,
   'resdcn': get_pose_net_dcn,
   'hourglass': get_large_hourglass_net,
+  'hourglass4':get_large_hourglass_4_net
 }
 
 def create_model(arch, heads, head_conv):
@@ -48,14 +50,18 @@ def load_model(model, model_path, optimizer=None, resume=False,
   checkpoint = torch.load(model_path, map_location=lambda storage, loc: storage)
   print('loaded {}, epoch {}'.format(model_path, checkpoint['epoch']))
   state_dict_ = checkpoint['state_dict']
+  
   state_dict = {}
   
   # convert data_parallal to model
   for k in state_dict_:
-    if k.startswith('module') and not k.startswith('module_list'):
-      state_dict[k[7:]] = state_dict_[k]
+    new_k = k
+    if k.startswith('model'):
+      new_k = k[6:]
+    if new_k.startswith('module') and not new_k.startswith('module_list'):
+      state_dict[new_k[7:]] = state_dict_[k]
     else:
-      state_dict[k] = state_dict_[k]
+      state_dict[new_k] = state_dict_[k]
   model_state_dict = model.state_dict()
 
   # check loaded parameters and created model parameters
