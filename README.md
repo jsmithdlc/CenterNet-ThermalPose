@@ -7,8 +7,9 @@ Pose Estimation on Thermal Images, based on center point detection by CenterNet.
 
 
 ## Project Structure
-- **CenterNet**: forked repository from https://github.com/xingyizhou/CenterNet.git, with changes for incorporating HRNet backbone, freezing specific layers and backbones, among other.
+- **CenterNet**: forked repository from https://github.com/xingyizhou/CenterNet.git, with changes for incorporating HRNet & 4-Stack Hourglass backbone, freezing specific layers and backbones, among other.
 - **figures**: includes training plots for different experiments, network graphs for visualizing, output keypoint detection images and captured lab images
+- **src**: contains program `detect_people.py` for detecting human pose over input image or video and some utilities used during the project development.
 
 ## Manually Annotated Thermal Image Dataset
 For model finetuning, 600 images were labeled for training and 200 images for testing. Dataset is available at:
