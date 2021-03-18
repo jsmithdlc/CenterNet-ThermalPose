@@ -103,7 +103,37 @@ python test.py multi_pose --exp_id hg_3x --dataset thermal_pose --keep_res --loa
 ~~~
 You can specify testing resolution using `--input_res <resolution>`. For example, to test over 384 X 384 images, use `--input_res 384`.
 
+## References
+    @inproceedings{zhou2019objects,
+          title={Objects as Points},
+          author={Zhou, Xingyi and Wang, Dequan and Kr{\"a}henb{\"u}hl, Philipp},
+          booktitle={arXiv preprint arXiv:1904.07850},
+          year={2019}
+        }
+    @article{NewellYD16,
+          title={Stacked Hourglass Networks for Human Pose Estimation},
+          author={Alejandro Newell and Kaiyu Yang and Jia Deng},
+          journal={CoRR},
+          url={http://arxiv.org/abs/1603.06937},
+          year={2016},
+        }
+    @inproceedings{SunXLW19,
+          title={Deep High-Resolution Representation Learning for Human Pose Estimation},
+          author={Ke Sun and Bin Xiao and Dong Liu and Jingdong Wang},
+          booktitle={CVPR},
+          year={2019}
+        }
+    @article{DBLP:journals/corr/YuWD17,
+          title={Deep Layer Aggregation},
+          author={Fisher Yu and Dequan Wang and Trevor Darrell},
+          journal={CoRR},
+          url={http://arxiv.org/abs/1707.06484},
+          year={2017},
+        }
 
+       
+
+    
 
 
 
