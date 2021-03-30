@@ -234,6 +234,10 @@ class opts(object):
     self.parser.add_argument('--num_joints', type=int, default=17,
                              help='number of joints for multi-pose detection')
 
+    # save evaluation time per ammount of people in images
+    self.parser.add_argument('--save_times_per_people', action='store_true',
+                             help='save inference times per ammount of people in images')
+
 
   def parse(self, args=''):
     if args == '':

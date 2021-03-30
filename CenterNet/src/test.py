@@ -66,18 +66,36 @@ def prefetch_test(opt):
   bar = Bar('{}'.format(opt.exp_id), max=num_iters)
   time_stats = ['tot', 'load', 'pre', 'net', 'dec', 'post', 'merge']
   avg_time_stats = {t: AverageMeter() for t in time_stats}
+
+  times_per_people = {}
   for ind, (img_id, pre_processed_images) in enumerate(data_loader):
     ret = detector.run(pre_processed_images)
     results[img_id.numpy().astype(np.int32)[0]] = ret['results']
     Bar.suffix = '[{0}/{1}]|Tot: {total:} |ETA: {eta:} '.format(
                    ind, num_iters, total=bar.elapsed_td, eta=bar.eta_td)
+
+    n_people = len(dataset.coco.getAnnIds(imgIds=img_id.numpy().astype(np.int32)))
+    if n_people not in times_per_people.keys():
+        times_per_people[n_people] = {stat:0 for stat in time_stats}
+        times_per_people[n_people]["n"] = 0
+    times_per_people[n_people]["n"]+=1
+
     for t in avg_time_stats:
       avg_time_stats[t].update(ret[t])
       Bar.suffix = Bar.suffix + '|{} {tm.val:.3f}s ({tm.avg:.3f}s) '.format(
         t, tm = avg_time_stats[t])
+      times_per_people[n_people][t] += avg_time_stats[t].avg
+
     bar.next()
   bar.finish()
   dataset.run_eval(results, opt.save_dir)
+  if opt.save_times_per_people:
+      out_dir_time = "../time_reports/{}/".format(opt.exp_id)
+      if not os.path.isdir(out_dir_time):
+        os.mkdir(out_dir_time)
+      with open("{}times_per_people.json".format(out_dir_time),'w') as f:
+        json.dump(times_per_people,f)
+
 
 def test(opt):
   os.environ['CUDA_VISIBLE_DEVICES'] = opt.gpus_str
@@ -102,6 +120,10 @@ def test(opt):
     img_info = dataset.coco.loadImgs(ids=[img_id])[0]
     img_path = os.path.join(dataset.img_dir, img_info['file_name'])
 
+    n_people = len(dataset.coco.getAnnIds(imgIds=[img_id]))
+    if n_people not in times_per_people.keys():
+        times_per_people[n_people] = {stat:0 for stat in time_stats}
+
     if opt.task == 'ddd':
       ret = detector.run(img_path, img_info['calib'])
     else:
@@ -114,9 +136,17 @@ def test(opt):
     for t in avg_time_stats:
       avg_time_stats[t].update(ret[t])
       Bar.suffix = Bar.suffix + '|{} {:.3f} '.format(t, avg_time_stats[t].avg)
+      times_per_people[n_people][t] += avg_time_stats[t].avg
     bar.next()
   bar.finish()
   dataset.run_eval(results, opt.save_dir)
+  if opt.save_times_per_people:
+      out_dir_time = "./time_reports/{}".format(opt.exp_id)
+      if not os.path.isdir(out_dir_time):
+        os.mkdir(out_dir_time)
+      with open("{}/times_per_people.json".format(out_dir_time)) as f:
+        json.dump(times_per_people,f)
+
 
 if __name__ == '__main__':
   opt = opts().parse()
