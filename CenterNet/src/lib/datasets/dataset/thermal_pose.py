@@ -35,7 +35,7 @@ class THERMALPOSE(data.Dataset):
     if split == 'test':
       self.annot_path = os.path.join(
           self.data_dir, 'annotations', 
-          'image_info_test-dev2017.json').format(split)
+          'thermalPose_test.json').format(split)
     else:
       self.annot_path = os.path.join(
         self.data_dir, 'annotations', 
