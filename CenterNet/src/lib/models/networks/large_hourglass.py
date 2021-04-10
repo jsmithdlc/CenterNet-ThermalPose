@@ -259,6 +259,7 @@ class exkp(nn.Module):
             kp_, cnv_  = self.kps[ind], self.cnvs[ind]
             kp  = kp_(inter)
             cnv = cnv_(kp)
+            print(cnv.shape)
 
 
             # ORIGINAL

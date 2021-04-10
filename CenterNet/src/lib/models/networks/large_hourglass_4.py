@@ -9,6 +9,21 @@ import torch
 
 Pool = nn.MaxPool2d
 
+
+class convolution(nn.Module):
+    def __init__(self, k, inp_dim, out_dim, stride=1, with_bn=True):
+        super(convolution, self).__init__()
+        pad = (k - 1) // 2
+        self.conv = nn.Conv2d(inp_dim, out_dim, (k, k), padding=(pad, pad), stride=(stride, stride), bias=not with_bn)
+        self.bn   = nn.BatchNorm2d(out_dim) if with_bn else nn.Sequential()
+        self.relu = nn.ReLU(inplace=True)
+
+    def forward(self, x):
+        conv = self.conv(x)
+        bn   = self.bn(conv)
+        relu = self.relu(bn)
+        return relu
+
 def batchnorm(x):
     return nn.BatchNorm2d(x.size()[1])(x)
 
@@ -19,11 +34,8 @@ def weights_init(m):
         m.weight.data.normal_(0, (1./n)**0.5) 
 
 def make_heat_layer(cnv_dim, curr_dim, out_dim):
-    with_bn = False
     return nn.Sequential(
-        #convolution(3, cnv_dim, curr_dim, with_bn=False)
-        nn.Conv2d(cnv_dim, curr_dim, (3, 3), padding=(1, 1), stride=(1, 1), bias=not with_bn),
-        nn.ReLU(inplace=True),
+        convolution(3, cnv_dim, curr_dim, with_bn=False),
         nn.Conv2d(curr_dim, out_dim, (1, 1))
     )
 
@@ -97,6 +109,7 @@ class Merge(nn.Module):
     def __init__(self, x_dim, y_dim):
         super(Merge, self).__init__()
         self.conv = Conv(x_dim, y_dim, 1, relu=False, bn=False)
+        #self.conv = Conv(x_dim, y_dim, 1, relu=True, bn=True)
 
     def forward(self, x):
         return self.conv(x)
@@ -120,6 +133,7 @@ class PoseNet(nn.Module):
         ) for i in range(nstack)] )
 
         self.outs = nn.ModuleList( [Conv(inp_dim, oup_dim, 1, relu=False, bn=False) for i in range(nstack)] )
+        #self.outs = nn.ModuleList( [Conv(inp_dim, oup_dim, 1, relu=True, bn=True) for i in range(nstack)] )
         self.merge_features = nn.ModuleList( [Merge(inp_dim, inp_dim) for i in range(nstack-1)] )
         self.merge_preds = nn.ModuleList( [Merge(oup_dim, inp_dim) for i in range(nstack-1)] )
 
@@ -142,17 +156,17 @@ class PoseNet(nn.Module):
                         oup_dim, inp_dim, heads[head]) for _ in range(nstack)
                 ])
                 self.__setattr__(head, module)
+        self.relu = nn.ReLU(inplace=True)
 
     def forward(self, image):
-        #x = imgs.permute(0, 3, 1, 2)
         x = self.pre(image)
+        preds = []
         outs = []
         for i in range(self.nstack):
             feat_, out_ = self.features[i], self.outs[i]
             feat = feat_(x)
             pred = out_(feat)
-
-             # ORIGINAL
+            preds.append(pred)
             out = {}
             for head in self.heads:
                 layer = self.__getattr__(head)[i]
@@ -161,7 +175,7 @@ class PoseNet(nn.Module):
             outs.append(out)
 
             if i != self.nstack - 1:
-                x = x + self.merge_preds[i](pred) + self.merge_features[i](feat)
+                x = x + self.merge_preds[i](preds[-1]) + self.merge_features[i](feat)
         #return torch.stack(preds, 1)
         return outs
 
