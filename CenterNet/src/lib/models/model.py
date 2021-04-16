@@ -13,7 +13,9 @@ from .networks.dlav0 import get_pose_net as get_dlav0
 from .networks.pose_dla_dcn import get_pose_net as get_dla_dcn
 from .networks.resnet_dcn import get_pose_net as get_pose_net_dcn
 from .networks.large_hourglass import get_large_hourglass_net
-from .networks.large_hourglass_4 import get_large_hourglass_4_net
+from .networks.large_hourglass_4 import get_hourglass_4
+from .networks.cornernet_saccade import get_hourglass_saccade
+from .
 from .networks.pose_higher_hrnet import get_hrpose_net
 from config import cfg, update_config
 
@@ -25,7 +27,8 @@ _model_factory = {
   'hrnet48': get_hrpose_net,
   'resdcn': get_pose_net_dcn,
   'hourglass': get_large_hourglass_net,
-  'hourglass4':get_large_hourglass_4_net
+  'hourglass3':get_hourglass_saccade,
+  'hourglass4':get_hourglass_4
 }
 
 def create_model(arch, heads, head_conv):
@@ -47,10 +50,13 @@ def create_model(arch, heads, head_conv):
 def load_model(model, model_path, optimizer=None, resume=False, 
                lr=None, lr_step=None,freeze_backbone=False,freeze_blocks=""):
   start_epoch = 0
-  checkpoint = torch.load(model_path, map_location=lambda storage, loc: storage)
-  print('loaded {}, epoch {}'.format(model_path, checkpoint['epoch']))
-  state_dict_ = checkpoint['state_dict']
-  
+  weights_extension = model_path.split("/")[-1].split(".")[-1]
+  if weights_extension == 'pkl':
+    state_dict_ = torch.load(model_path, map_location=lambda storage, loc: storage)
+  else:
+    checkpoint = torch.load(model_path, map_location=lambda storage, loc: storage)
+    print('loaded {}, epoch {}'.format(model_path, checkpoint['epoch']))
+    state_dict_ = checkpoint['state_dict']
   state_dict = {}
   
   # convert data_parallal to model
@@ -59,9 +65,10 @@ def load_model(model, model_path, optimizer=None, resume=False,
     if k.startswith('model'):
       new_k = k[6:]
     if new_k.startswith('module') and not new_k.startswith('module_list'):
-      state_dict[new_k[7:]] = state_dict_[k]
-    else:
-      state_dict[new_k] = state_dict_[k]
+      new_k = new_k[7:]
+    if new_k.startswith('hg.'):
+      new_k = new_k[3:]
+    state_dict[new_k] = state_dict_[k]
   model_state_dict = model.state_dict()
 
   # check loaded parameters and created model parameters

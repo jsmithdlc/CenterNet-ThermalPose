@@ -259,8 +259,6 @@ class exkp(nn.Module):
             kp_, cnv_  = self.kps[ind], self.cnvs[ind]
             kp  = kp_(inter)
             cnv = cnv_(kp)
-            print(cnv.shape)
-
 
             # ORIGINAL
             out = {}
@@ -295,10 +293,10 @@ def make_hg_layer(kernel, dim0, dim1, mod, layer=convolution, **kwargs):
 
 
 class HourglassNet(exkp):
-    def __init__(self, heads, num_stacks=2):
-        n       = 5
-        dims    = [256, 256, 384, 384, 384, 512]
-        modules = [2, 2, 2, 2, 2, 4]
+    def __init__(self, heads, n, dims, modules, num_stacks=2):
+        n       = n
+        dims    = dims
+        modules = modules
 
         super(HourglassNet, self).__init__(
             n, num_stacks, dims, modules, heads,
@@ -310,5 +308,8 @@ class HourglassNet(exkp):
         )
 
 def get_large_hourglass_net(num_layers, heads, head_conv):
-  model = HourglassNet(heads, 2)
+  n       = 5
+  dims    = [256, 256, 384, 384, 384, 512]
+  modules = [2, 2, 2, 2, 2, 4]
+  model = HourglassNet(heads, n,dims,modules,2)
   return model

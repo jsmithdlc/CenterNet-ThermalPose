@@ -109,7 +109,6 @@ class Merge(nn.Module):
     def __init__(self, x_dim, y_dim):
         super(Merge, self).__init__()
         self.conv = Conv(x_dim, y_dim, 1, relu=False, bn=False)
-        #self.conv = Conv(x_dim, y_dim, 1, relu=True, bn=True)
 
     def forward(self, x):
         return self.conv(x)
@@ -133,7 +132,6 @@ class PoseNet(nn.Module):
         ) for i in range(nstack)] )
 
         self.outs = nn.ModuleList( [Conv(inp_dim, oup_dim, 1, relu=False, bn=False) for i in range(nstack)] )
-        #self.outs = nn.ModuleList( [Conv(inp_dim, oup_dim, 1, relu=True, bn=True) for i in range(nstack)] )
         self.merge_features = nn.ModuleList( [Merge(inp_dim, inp_dim) for i in range(nstack-1)] )
         self.merge_preds = nn.ModuleList( [Merge(oup_dim, inp_dim) for i in range(nstack-1)] )
 
@@ -180,7 +178,7 @@ class PoseNet(nn.Module):
         return outs
 
 class HourglassNet4(PoseNet):
-    def __init__(self, heads, num_stacks=2):
+    def __init__(self, heads, num_stacks=4):
         super(HourglassNet4, self).__init__(
             heads = heads,
             nstack = num_stacks,
@@ -189,6 +187,6 @@ class HourglassNet4(PoseNet):
         )
 
 
-def get_large_hourglass_4_net(num_layers, heads, head_conv):
+def get_hourglass_4(num_layers, heads, head_conv):
   model = HourglassNet4(heads, 4)
   return model

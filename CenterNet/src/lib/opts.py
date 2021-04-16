@@ -262,6 +262,15 @@ class opts(object):
       opt.head_conv = 256 if 'dla' in opt.arch else 64
     opt.pad = 127 if 'hourglass' in opt.arch else 31
     opt.num_stacks = 2 if opt.arch == 'hourglass' else 1
+    
+    if opt.arch == 'hourglass':
+        opt.num_stacks = 2
+    elif opt.arch == 'hourglass3':
+        opt.num_stacks = 3
+    elif opt.arch == 'hourglass4':
+        opt.num_stacks = 4
+    else:
+        opt.num_stacks = 3
 
     if opt.trainval:
       opt.val_intervals = 100000000
