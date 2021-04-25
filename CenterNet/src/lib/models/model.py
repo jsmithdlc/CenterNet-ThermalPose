@@ -15,7 +15,6 @@ from .networks.resnet_dcn import get_pose_net as get_pose_net_dcn
 from .networks.large_hourglass import get_large_hourglass_net
 from .networks.large_hourglass_4 import get_hourglass_4
 from .networks.cornernet_saccade import get_hourglass_saccade
-from .
 from .networks.pose_higher_hrnet import get_hrpose_net
 from config import cfg, update_config
 
