@@ -85,9 +85,17 @@ class PoseThermal:
                     top_left_y = round(top_left[1],2)
                     bot_right_x = round(bottom_right[0],2)
                     bot_right_y = round(bottom_right[1],2)
-                    # Take absolute value for possible errors
-                    width = abs(round(bot_right_x - top_left_x,2))
-                    height = abs(round(bot_right_y - top_left_y,2))
+                    if bot_right_x < top_left_x:
+                      tmp_bot_right = top_left_x
+                      top_left_x = bot_right_x
+                      bot_right_x = tmp_bot_right
+                    if bot_right_y < top_left_y:
+                      tmp_bot_right = top_left_y
+                      top_left_y = bot_right_y
+                      bot_right_y = tmp_bot_right
+                    width = round(bot_right_x - top_left_x,2)
+                    height = round(bot_right_y - top_left_y,2)
+
                     new_annotation[identifier]['bbox'] = [top_left_x,top_left_y,
                                                           width,height]
                     new_annotation[identifier]['segmentation'] = [[top_left_x, top_left_y,
