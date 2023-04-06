@@ -19,8 +19,8 @@ Example detection images:
 - **src**: contains program `detect_people.py` for detecting human pose over input image or video and some utilities used during the project development.
 
 ## Manually Annotated Thermal Image Dataset
-For model finetuning, 600 images were labeled for training and 200 images for testing. Dataset is available at:
-https://drive.google.com/drive/folders/1YV7g563ZGlGO-9wx9G0vt6r7itJE8GDZ?usp=sharing
+For model finetuning, 600 images were labeled for training and 200 images for testing. Dataset is available at: (work in progress)
+<!-- https://drive.google.com/drive/folders/1YV7g563ZGlGO-9wx9G0vt6r7itJE8GDZ?usp=sharing -->
 
 ## Setting Up
 Code tested on Ubuntu 16.04, with Python 3.6 and Pytorch 1.1. NVIDIA GPUs required for training and testing. Steps to follow:
@@ -49,7 +49,7 @@ And disable cudnn batch normalization. For this, manually open `torch/nn/functio
  
  4. Clone this repo:
 ~~~
-git clone https://github.com/jsmithdlc/CenterNet-Thermal-Human-Pose-Estimation.git
+git clone https://github.com/jsmithdlc/Thermal-Human-Pose-Estimation.git
 cd CenterNet-Thermal-Human-Pose-Estimation
 ~~~
 
@@ -80,9 +80,11 @@ cd CenterNet/src/lib/external
 python setup.py build_ext --inplace
 ~~~
 
-8. Download pertained models, from https://drive.google.com/drive/folders/1cwINRJrUTxqJ0JMRza9WIGC0EKGuwswy?usp=sharing  and move them to `CenterNet/models/`
+8. Download pertained models (in progress)
+<!-- , from https://drive.google.com/drive/folders/1cwINRJrUTxqJ0JMRza9WIGC0EKGuwswy?usp=sharing  and move them to `CenterNet/models/` -->
 
-9. Download thermal images dataset, from https://drive.google.com/drive/folders/1YV7g563ZGlGO-9wx9G0vt6r7itJE8GDZ?usp=sharing, and move it to `CenterNet/data/`
+9. Download thermal images dataset (in progress)
+<!-- , from https://drive.google.com/drive/folders/1YV7g563ZGlGO-9wx9G0vt6r7itJE8GDZ?usp=sharing, and move it to `CenterNet/data/` -->
 
 ## Running Demo
 Demo program can be run using the following command, using CenterNet DLA architecture for detection:
