@@ -111,6 +111,14 @@ python test.py multi_pose --exp_id hg_3x --dataset thermal_pose --keep_res --loa
 You can specify testing resolution using `--input_res <resolution>`. For example, to test over 384 X 384 images, use `--input_res 384`.
 
 ## References
+    @article{javiersmith2023,
+          title={Human Pose Estimation using Thermal Images},
+          author={Javier Smith and Patricio Loncomilla and Javier Ruiz-del-Solar},
+          journal={IEEE Access},
+          url={https://www.doi.org/10.1109/ACCESS.2023.3264714},
+          year={2023},
+        }
+
     @inproceedings{zhou2019objects,
           title={Objects as Points},
           author={Zhou, Xingyi and Wang, Dequan and Kr{\"a}henb{\"u}hl, Philipp},
