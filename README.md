@@ -5,7 +5,7 @@ This repository contains the code and dataset from the following paper:
 
 `J. Smith, P. Loncomilla and J. Ruiz-del-Solar, "Human Pose Estimation using Thermal Images," in IEEE Access, doi: 10.1109/ACCESS.2023.3264714.`
 
-** Note using the code and using the dataset requires to reference this paper. **
+<b> Note that both using the code or using the dataset requires to reference this paper. </b>
 
 Example detection images:
 
