@@ -80,11 +80,9 @@ cd CenterNet/src/lib/external
 python setup.py build_ext --inplace
 ~~~
 
-8. Download pertained models (in progress)
-<!-- , from https://drive.google.com/drive/folders/1cwINRJrUTxqJ0JMRza9WIGC0EKGuwswy?usp=sharing  and move them to `CenterNet/models/` -->
+8. Download pretained models, from https://drive.google.com/drive/folders/1cwINRJrUTxqJ0JMRza9WIGC0EKGuwswy?usp=sharing  and move them to `CenterNet/models/`
 
-9. Download thermal images dataset (in progress)
-<!-- , from https://drive.google.com/drive/folders/1YV7g563ZGlGO-9wx9G0vt6r7itJE8GDZ?usp=sharing, and move it to `CenterNet/data/` -->
+9. Download thermal images dataset, from https://datos.uchile.cl/dataset.xhtml?persistentId=doi%3A10.34691%2FUCHILE%2F4B6NA3
 
 ## Running Demo
 Demo program can be run using the following command, using CenterNet DLA architecture for detection:
