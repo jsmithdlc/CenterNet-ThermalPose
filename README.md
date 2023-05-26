@@ -1,28 +1,25 @@
 # Thermal Pose Estimation Based on CenterNet
 <!-- Pose Estimation on Thermal Images, based on center point detection by CenterNet. Example detection images: -->
 
-This repository contains the code and dataset from the following paper:
+This repository contains the CenterNet from the following paper:
 
 `J. Smith, P. Loncomilla and J. Ruiz-del-Solar, "Human Pose Estimation using Thermal Images," in IEEE Access, doi: 10.1109/ACCESS.2023.3264714.`
 
-<b> Note that the codes and dataset are available for research purposes. Using both using the codes or using the dataset require to reference this paper. </b>
-
-Example detection images:
-
-<p align="center"> <img src='figures/samples/sample1.png' align="center" height="230px"> <img src='figures/samples/sample2.png' align="center" height="230px">  <img src='figures/samples/sample3.png' align="center" height="230px"> <img src='figures/samples/sample4.png' align="center" height="230px">                    <img src='figures/samples/sample5.png' align="center" height="230px"> <img src='figures/samples/sample6.png' align="center" height="230px">                    <img src='figures/samples/sample7.png' align="center" height="230px"></p>
-
-
+<b> Note that the code is available for research purposes. Using the code or dataset requires a reference to this paper. </b>
 
 ## Project Structure
+
 - **CenterNet**: forked repository from https://github.com/xingyizhou/CenterNet.git, with changes for incorporating HRNet & 4-Stack Hourglass backbone, freezing specific layers and backbones, among other.
 - **figures**: includes training plots for different experiments, network graphs for visualizing, output keypoint detection images and captured lab images
 - **src**: contains program `detect_people.py` for detecting human pose over input image or video and some utilities used during the project development.
 
 ## Manually Annotated Thermal Image Dataset
+
 For model finetuning, 600 images were labeled for training and 200 images for testing. Dataset is available at: (work in progress)
 <!-- https://drive.google.com/drive/folders/1YV7g563ZGlGO-9wx9G0vt6r7itJE8GDZ?usp=sharing -->
 
 ## Setting Up
+
 Code tested on Ubuntu 16.04, with Python 3.6 and Pytorch 1.1. NVIDIA GPUs required for training and testing. Steps to follow:
 
 1. Create Conda Environment
@@ -85,6 +82,7 @@ python setup.py build_ext --inplace
 9. Download thermal images dataset, from https://datos.uchile.cl/dataset.xhtml?persistentId=doi%3A10.34691%2FUCHILE%2F4B6NA3
 
 ## Running Demo
+
 Demo program can be run using the following command, using CenterNet DLA architecture for detection:
 ~~~
 cd src
@@ -95,6 +93,7 @@ For using Hourglass or HRNet backbones, include parameter `-- arch` with `hourgl
 Images with detections can be saved using `--save_img`. Likewise, csv files with detections can be generated using `--save_csv`. In each case, user must specify output directory using `--output_dir /path/to/output/directory/`.
 
 ## Training Models
+
 Models can be trained using the following sample command:
 ~~~
 cd CenterNet/src
@@ -103,6 +102,7 @@ python main.py multi_pose --exp_id <experiment_name> --dataset thermal_pose --ma
 To change backbone network, specify `--arch` with `hourglass` or `hrnet32`. Experiments with specific layer freezing can be turned on using `--freeze_blocks` and specifying modules to be freezed. For example, to finetune CenterNet DLA with first convolutional block freezed, run above command including `--freeze_blocks base_layer`. Entire backbone network can be freezed simply using `--freeze_backbone`. More details about different possible options can be found at `CenterNet/src/lib/opts.py`.
 
 ## Testing Models
+
 Models can be tested using the following sample command:
 ~~~
 cd CenterNet/src
