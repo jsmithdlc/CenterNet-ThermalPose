@@ -15,8 +15,7 @@ This repository contains the CenterNet from the following paper:
 
 ## Manually Annotated Thermal Image Dataset
 
-For model finetuning, 600 images were labeled for training and 200 images for testing. Dataset is available at: (work in progress)
-<!-- https://drive.google.com/drive/folders/1YV7g563ZGlGO-9wx9G0vt6r7itJE8GDZ?usp=sharing -->
+For model finetuning, 600 images were labeled for training and 200 images for testing. Dataset is available at this [google drive](https://drive.google.com/drive/folders/1YV7g563ZGlGO-9wx9G0vt6r7itJE8GDZ?usp=drive_link)
 
 ## Setting Up
 
@@ -79,7 +78,7 @@ python setup.py build_ext --inplace
 
 8. Download pretained models, from https://drive.google.com/drive/folders/1cwINRJrUTxqJ0JMRza9WIGC0EKGuwswy?usp=sharing  and move them to `CenterNet/models/`
 
-9. Download thermal images dataset, from https://datos.uchile.cl/dataset.xhtml?persistentId=doi%3A10.34691%2FUCHILE%2F4B6NA3
+9. Download thermal images dataset, from https://drive.google.com/drive/folders/1YV7g563ZGlGO-9wx9G0vt6r7itJE8GDZ?usp=drive_link
 
 ## Running Demo
 
